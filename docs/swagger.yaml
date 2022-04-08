@@ -1,0 +1,101 @@
+basePath: /api/v1
+definitions:
+  db.Credentials:
+    properties:
+      about:
+        type: string
+      address:
+        $ref: '#/definitions/entity.AddressDB'
+      auth_token:
+        type: string
+      countryCode:
+        type: string
+      createdDate:
+        type: string
+      designation:
+        type: string
+      dob:
+        type: string
+      email:
+        type: string
+      emailLoginOtp:
+        type: string
+      emailSentTime:
+        type: string
+      firstName:
+        type: string
+      lastLoginDeviceInfo: {}
+      lastLoginLocation:
+        type: string
+      lastName:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      passwordResetCode:
+        description: TermsChecked        bool             `bson:"terms_and_condition"
+          json:"termsAndCondition"`
+        type: string
+      passwordResetTime:
+        type: string
+      phoneNumber:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      urlToProfileImage:
+        type: string
+      verificationCode:
+        type: string
+      verifiedTime:
+        type: string
+    type: object
+  entity.AddressDB:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      pin:
+        type: string
+      state:
+        type: string
+    type: object
+host: localhost:6019
+info:
+  contact:
+    email: soberkoder@swagger.io
+    name: API Support
+  description: This is a sample serice for managing kinexx
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Kinexx API's
+  version: "1.0"
+paths:
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: SignUp with the input payload
+      parameters:
+      - description: SignUp
+        in: body
+        name: SignUp
+        required: true
+        schema:
+          $ref: '#/definitions/db.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: SignUp
+      tags:
+      - SignUp
+swagger: "2.0"

@@ -1,0 +1,150 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample serice for managing kinexx",
+        "title": "Kinexx API's",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "soberkoder@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:6019",
+    "basePath": "/api/v1",
+    "paths": {
+        "/register": {
+            "post": {
+                "description": "SignUp with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SignUp"
+                ],
+                "summary": "SignUp",
+                "parameters": [
+                    {
+                        "description": "SignUp",
+                        "name": "SignUp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Credentials"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "db.Credentials": {
+            "type": "object",
+            "properties": {
+                "about": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/entity.AddressDB"
+                },
+                "auth_token": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                },
+                "createdDate": {
+                    "type": "string"
+                },
+                "designation": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "emailLoginOtp": {
+                    "type": "string"
+                },
+                "emailSentTime": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastLoginDeviceInfo": {},
+                "lastLoginLocation": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "passwordResetCode": {
+                    "description": "TermsChecked        bool             `bson:\"terms_and_condition\" json:\"termsAndCondition\"`",
+                    "type": "string"
+                },
+                "passwordResetTime": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "urlToProfileImage": {
+                    "type": "string"
+                },
+                "verificationCode": {
+                    "type": "string"
+                },
+                "verifiedTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.AddressDB": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "pin": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
