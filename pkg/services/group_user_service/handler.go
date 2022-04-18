@@ -2,10 +2,8 @@ package groupuserservice
 
 import (
 	"encoding/json"
-	// "io/ioutil"
-	// "kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/group_user"
-	"kinexx_backend/pkg/services/group_user_service/db"
+	"kinexx_backend/pkg/repository/groups/group_user"
+	groupUserdb "kinexx_backend/pkg/services/group_user_service/db"
 	"net/http"
 	"strings"
 	"time"
@@ -18,7 +16,7 @@ import (
 )
 
 var (
-	groupUserService = db.NewGroupUserService(group_user.NewGroupUserRepository("group_user"))
+	groupUserService = groupUserdb.NewGroupUserService(group_user.NewGroupUserRepository("group_user"))
 )
 
 func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
@@ -44,8 +42,8 @@ func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
 
 	var groupID = mux.Vars(r)["groupID"]
 	var userID = mux.Vars(r)["userID"]
-
-	data, err := groupUserService.AddUserToGroup(groupID, userID)
+	var status = mux.Vars(r)["status"]
+	data, err := groupUserService.AddUserToGroup(groupID, userID, status)
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
 
@@ -85,7 +83,7 @@ func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	var groupID = mux.Vars(r)["groupID"]
 	var userID = mux.Vars(r)["userID"]
 
-	err = groupUserService.RemoveUserFromGroup( userID, groupID)
+	err = groupUserService.RemoveUserFromGroup(userID, groupID)
 	// why not return (data, err) instead of err in RemoveUserFromGroup
 
 	if err != nil {
@@ -96,7 +94,7 @@ func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data":"User Removed" })
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": "User Removed"})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("comment updated", logrus.Fields{
@@ -137,14 +135,13 @@ func GetGroupsForUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data":SliceOfGroups })
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": SliceOfGroups})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("comment updated", logrus.Fields{
 		"duration": duration,
 	})
 }
-
 
 func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
@@ -168,8 +165,7 @@ func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
 
 	var groupID = mux.Vars(r)["groupID"]
 
-	SliceOfUsers, err := groupUserService.GetUsersInGroup( groupID)
-	// why not return (data, err) instead of err in RemoveUserFromGroup
+	SliceOfUsers, err := groupUserService.GetUsersInGroup(groupID)
 
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
@@ -179,7 +175,7 @@ func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data":SliceOfUsers })
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": SliceOfUsers})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("comment updated", logrus.Fields{

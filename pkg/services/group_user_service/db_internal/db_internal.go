@@ -25,6 +25,7 @@ func AddUserToGroupInternal(groupID, userID string) (string, error) {
 		group_user.CreatedDate = time.Now()
 		group_user.GroupID = groupID
 		group_user.UserID = userID
+		group_user.Status = "ADDED"
 		// how to use set
 		return repo.InsertOne(group_user)
 		// not inserting groupID, userID when inserting

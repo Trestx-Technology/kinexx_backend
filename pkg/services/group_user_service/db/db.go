@@ -25,7 +25,7 @@ func NewGroupUserService(repository group_user.GroupUserRepository) GroupUserSer
 	return &groupUserService{}
 }
 
-func (*groupUserService) AddUserToGroup(groupID, userID string) (string, error) {
+func (*groupUserService) AddUserToGroup(groupID, userID, status string) (string, error) {
 
 	filter := bson.M{"group_id": groupID, "user_id": userID}
 	group_user, err := repo.FindOne(filter, bson.M{})
@@ -36,6 +36,10 @@ func (*groupUserService) AddUserToGroup(groupID, userID string) (string, error) 
 		group_user.CreatedDate = time.Now()
 		group_user.GroupID = groupID
 		group_user.UserID = userID
+		if status == "" {
+			status = "ADDED"
+		}
+		group_user.Status = status
 		// how to use set
 		return repo.InsertOne(group_user)
 		// not inserting groupID, userID when inserting
@@ -45,25 +49,6 @@ func (*groupUserService) AddUserToGroup(groupID, userID string) (string, error) 
 
 }
 
-func AddUserToGroupInternal(groupID, userID string) (string, error) {
-
-	filter := bson.M{"group_id": groupID, "user_id": userID}
-	group_user, err := repo.FindOne(filter, bson.M{})
-	if err != nil {
-		// group_user not present
-		id := primitive.NewObjectID()
-		group_user.ID = id
-		group_user.CreatedDate = time.Now()
-		group_user.GroupID = groupID
-		group_user.UserID = userID
-		// how to use set
-		return repo.InsertOne(group_user)
-		// not inserting groupID, userID when inserting
-	}
-	// group_user present
-	return "", errors.New("document already there")
-
-}
 func (*groupUserService) RemoveUserFromGroup(userID, groupID string) error {
 	filter := bson.M{"group_id": groupID, "user_id": userID}
 	return repo.DeleteOne(filter)
@@ -100,5 +85,3 @@ func (*groupUserService) GetUsersInGroup(groupID string) ([]entity.ProfileDB, er
 
 	return db.GetProfilesForIDs(emptyslice)
 }
-
-// []string in GetGroupsForUser vs []entity.ProfileDB in GetUsersInGroup
