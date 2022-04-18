@@ -6,6 +6,10 @@ import (
 	chat "kinexx_backend/pkg/services/chat_service"
 	comment "kinexx_backend/pkg/services/comment_service"
 	connection "kinexx_backend/pkg/services/connection_service"
+	goal "kinexx_backend/pkg/services/goal_service"
+	goaluserservice "kinexx_backend/pkg/services/goal_user_service"
+	group "kinexx_backend/pkg/services/group_service"
+	groupuserservice "kinexx_backend/pkg/services/group_user_service"
 	hobby "kinexx_backend/pkg/services/hobby_service"
 	movies "kinexx_backend/pkg/services/movies_service"
 	notification "kinexx_backend/pkg/services/notification_service"
@@ -395,7 +399,78 @@ var routes = Routes{
 		"/profile/with/rating/{userID}",
 		rating_service.GetUserWithRating,
 	},
-
+	Route{
+		"Group",
+		"POST",
+		"/group",
+		group.MakeGroup,
+	},
+	Route{
+		"Group",
+		"GET",
+		"/group",
+		group.GetAllGroup,
+	},
+	Route{
+		"Group",
+		"GET",
+		"/group/detail/{groupID}",
+		group.GetGroupDetail,
+	},
+	Route{
+		"Group",
+		"GET",
+		"/group/user/{userID}",
+		group.GetGroupByMe,
+	},
+	Route{
+		"Group User",
+		"POST",
+		"/group/user/{groupID}/{userID}/{status}",
+		groupuserservice.AddUserToGroup,
+	},
+	Route{
+		"Group User",
+		"POST",
+		"/group/goal/{groupID}/{goalID}",
+		goaluserservice.AddUserToGoal,
+	},
+	Route{
+		"Group User",
+		"GET",
+		"/group/by/user/{userID}",
+		groupuserservice.GetGroupsForUser,
+	},
+	Route{
+		"Group User",
+		"GET",
+		"/users/in/group/{groupID}",
+		groupuserservice.GetUsersInGroup,
+	},
+	Route{
+		"Group User",
+		"GET",
+		"/goal/in/group/{groupID}",
+		goaluserservice.GetGoalsForUser,
+	},
+	Route{
+		"Group User",
+		"GET",
+		"/group/by/goal/{goalID}",
+		goaluserservice.GetUsersInGoal,
+	},
+	Route{
+		"Goal",
+		"POST",
+		"/goal",
+		goal.MakeGoal,
+	},
+	Route{
+		"Goal",
+		"GET",
+		"/goal",
+		goal.GetAllGoals,
+	},
 	Route{
 		"HEALTH",
 		"GET",

@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/repository/groups"
-	db "kinexx_backend/pkg/services/services/group_service/db"
+	groupDB "kinexx_backend/pkg/services/group_service/db"
 	"net/http"
 	"strings"
 	"time"
@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	groupservice = db.NewGroupService(groups.NewGroupRepository("groups"))
+	groupservice = groupDB.NewGroupService(groups.NewGroupRepository("groups"))
 )
 
 func MakeGroup(w http.ResponseWriter, r *http.Request) {
@@ -108,6 +108,119 @@ func DeleteGroup(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func GetGroupDetail(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("making group", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var groupID = mux.Vars(r)["groupID"]
+
+	// why not used json.Unmarshal
+	// how did we get id
+
+	data, err := groupservice.GetGroup(groupID)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to delete group"))
+
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete group"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("comment updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func GetAllGroup(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("making group", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+
+	data, err := groupservice.GetAllGroup()
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to delete group"))
+
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete group"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("comment updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func GetGroupByMe(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("making group", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var userID = mux.Vars(r)["userID"]
+
+	data, err := groupservice.GetGroupCreatedByMe(userID)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to delete group"))
+
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete group"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("comment updated", logrus.Fields{
+		"duration": duration,
+	})
+}
 func PauseGroup(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("making group", logrus.Fields{
