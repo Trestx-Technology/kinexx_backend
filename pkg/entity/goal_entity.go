@@ -12,6 +12,7 @@ type GoalDB struct {
 	Name          string             `bson:"name" json:"name"`
 	Description   string             `bson:"description" json:"description"`
 	Banner        string             `bson:"banner" json:"banner"`
+	PromoVideos   []string           `bson:"promo_videos" json:"promo_videos"`
 	CreatedDate   time.Time          `bson:"created_date" json:"created_date"`
 	CreatorUserID string             `bson:"creator_user_id" json:"creator_user_id"`
 	GroupIDList   []string           `json:"group_id_list"`

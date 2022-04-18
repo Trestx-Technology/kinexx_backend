@@ -1,12 +1,11 @@
-package groupservice
+package goalservice
 
 import (
 	"encoding/json"
-	// "go/token"
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/groups"
-	db "kinexx_backend/pkg/services/services/group_service/db"
+	"kinexx_backend/pkg/repository/goals"
+	goalDB "kinexx_backend/pkg/services/goal_service/db"
 	"net/http"
 	"strings"
 	"time"
@@ -19,12 +18,12 @@ import (
 )
 
 var (
-	groupservice = db.NewGroupService(groups.NewGroupRepository("groups"))
+	goalservice = goalDB.NewGoalService(goals.NewGoalRepository("goals"))
 )
 
-func MakeGroup(w http.ResponseWriter, r *http.Request) {
+func MakeGoal(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
-	trestCommon.DLogMap("making group", logrus.Fields{
+	trestCommon.DLogMap("making goal", logrus.Fields{
 		"start_time": startTime})
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -41,21 +40,21 @@ func MakeGroup(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
 		return
 	}
-	var group *entity.GroupDB
+	var goal *entity.GoalDB
 	body, _ := ioutil.ReadAll(r.Body)
-	err = json.Unmarshal(body, &group)
+	err = json.Unmarshal(body, &goal)
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to unmarshal body"))
 		w.WriteHeader(http.StatusUnsupportedMediaType)
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Something Went wrong"})
 		return
 	}
-	data, err := groupservice.MakeGroup(group)
+	data, err := goalservice.MakeGoal(goal)
 	if err != nil {
-		trestCommon.ECLog1(errors.Wrapf(err, "unable to make group"))
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to make goal"))
 
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to make group"})
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to make goal"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -66,8 +65,7 @@ func MakeGroup(w http.ResponseWriter, r *http.Request) {
 		"duration": duration,
 	})
 }
-
-func DeleteGroup(w http.ResponseWriter, r *http.Request) {
+func GetAllGoals(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("making group", logrus.Fields{
 		"start_time": startTime})
@@ -86,17 +84,53 @@ func DeleteGroup(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
 		return
 	}
-	var groupID = mux.Vars(r)["groupID"]
 
-	// why not used json.Unmarshal
-	// how did we get id
-
-	err = groupservice.DeleteGroup(groupID)
+	data, err := goalservice.GetAllGoal()
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to delete group"))
 
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete group"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("comment updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func DeleteGoal(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("making goal", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var goalID = mux.Vars(r)["goalID"]
+
+	// why not used json.Unmarshal
+	// how did we get id
+
+	err = goalservice.DeleteGoal(goalID)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to delete goal"))
+
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete goal"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -108,9 +142,9 @@ func DeleteGroup(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func PauseGroup(w http.ResponseWriter, r *http.Request) {
+func PauseGoal(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
-	trestCommon.DLogMap("making group", logrus.Fields{
+	trestCommon.DLogMap("making goal", logrus.Fields{
 		"start_time": startTime})
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -127,15 +161,15 @@ func PauseGroup(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
 		return
 	}
-	var groupID = mux.Vars(r)["groupID"]
-	var groupStatus = mux.Vars(r)["status"]
+	var goalID = mux.Vars(r)["goalID"]
+	var goalStatus = mux.Vars(r)["status"]
 
-	data, err := groupservice.PauseGroup(groupStatus, groupID)
+	data, err := goalservice.PauseGoal(goalStatus, goalID)
 	if err != nil {
-		trestCommon.ECLog1(errors.Wrapf(err, "unable to pause group"))
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to pause goal"))
 
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to pause group"})
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to pause goal"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)

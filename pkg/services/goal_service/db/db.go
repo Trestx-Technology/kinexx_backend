@@ -80,6 +80,17 @@ func (*goalService) GetGoalCreatedByMe(userID string) ([]entity.GoalDB, error) {
 	return goals, err
 }
 
+func (*goalService) GetAllGoal() ([]entity.GoalDB, error) {
+	goals, err := repo.Find(bson.M{}, bson.M{})
+	if err != nil {
+		return []entity.GoalDB{}, err
+	}
+	for i := range goals {
+		goals[i].Banner = utils.CreatePreSignedDownloadUrl(goals[i].Banner)
+
+	}
+	return goals, err
+}
 func GetGoalsByIDs(goalIDs []string) ([]entity.GoalDB, error) {
 	goalBsonArray := bson.A{}
 	for _, goalID := range goalIDs {

@@ -107,6 +107,20 @@ func (*groupService) GetGroupCreatedByMe(userID string) ([]entity.GroupDB, error
 	return groups, err
 }
 
+func (*groupService) GetAllGroup() ([]entity.GroupDB, error) {
+	groups, err := repo.Find(bson.M{}, bson.M{})
+	if err != nil {
+		return []entity.GroupDB{}, err
+	}
+	for i := range groups {
+		groups[i].Banner = utils.CreatePreSignedDownloadUrl(groups[i].Banner)
+		groups[i].Logo = utils.CreatePreSignedDownloadUrl(groups[i].Logo)
+		for j := range groups[i].PromoVideos {
+			groups[i].PromoVideos[j] = utils.CreatePreSignedDownloadUrl(groups[i].PromoVideos[j])
+		}
+	}
+	return groups, err
+}
 func GetGroupsByIDs(groupIDs []string) ([]entity.GroupDB, error) {
 	groupBsonArray := bson.A{}
 	for _, groupID := range groupIDs {

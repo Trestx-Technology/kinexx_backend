@@ -1,11 +1,12 @@
-package groupuserservice
+package goaluserservice
 
 import (
 	"encoding/json"
 	// "io/ioutil"
 	// "kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/group_user"
-	"kinexx_backend/pkg/services/group_user_service/db"
+	goal_group "kinexx_backend/pkg/repository/goals/goals_group"
+	goalGroupdb "kinexx_backend/pkg/services/goal_user_service/db"
+
 	"net/http"
 	"strings"
 	"time"
@@ -18,10 +19,10 @@ import (
 )
 
 var (
-	groupUserService = db.NewGroupUserService(group_user.NewGroupUserRepository("group_user"))
+	goalUserService = goalGroupdb.NewGoalUserService(goal_group.NewGoalGroupRepository("goal_groups"))
 )
 
-func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
+func AddUserToGoal(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("setting comment", logrus.Fields{
 		"start_time": startTime})
@@ -40,12 +41,12 @@ func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
 		return
 	}
-	// var group_user *entity.GroupUserDB
+	// var goal_user *entity.GoalUserDB
 
-	var groupID = mux.Vars(r)["groupID"]
+	var goalID = mux.Vars(r)["goalID"]
 	var userID = mux.Vars(r)["userID"]
 
-	data, err := groupUserService.AddUserToGroup(groupID, userID)
+	data, err := goalUserService.AddUserToGoal(goalID, userID)
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
 
@@ -62,7 +63,7 @@ func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
+func RemoveUserFromGoal(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("setting comment", logrus.Fields{
 		"start_time": startTime})
@@ -82,11 +83,11 @@ func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var groupID = mux.Vars(r)["groupID"]
+	var goalID = mux.Vars(r)["goalID"]
 	var userID = mux.Vars(r)["userID"]
 
-	err = groupUserService.RemoveUserFromGroup( userID, groupID)
-	// why not return (data, err) instead of err in RemoveUserFromGroup
+	err = goalUserService.RemoveUserFromGoal(userID, goalID)
+	// why not return (data, err) instead of err in RemoveUserFromGoal
 
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
@@ -96,7 +97,7 @@ func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data":"User Removed" })
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": "User Removed"})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("comment updated", logrus.Fields{
@@ -104,7 +105,7 @@ func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func GetGroupsForUser(w http.ResponseWriter, r *http.Request) {
+func GetGoalsForUser(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("setting comment", logrus.Fields{
 		"start_time": startTime})
@@ -126,8 +127,8 @@ func GetGroupsForUser(w http.ResponseWriter, r *http.Request) {
 
 	var userID = mux.Vars(r)["userID"]
 
-	SliceOfGroups, err := groupUserService.GetGroupsForUser(userID)
-	// why not return (data, err) instead of err in RemoveUserFromGroup
+	SliceOfGoals, err := goalUserService.GetGoalsForUser(userID)
+	// why not return (data, err) instead of err in RemoveUserFromGoal
 
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
@@ -137,7 +138,7 @@ func GetGroupsForUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data":SliceOfGroups })
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": SliceOfGoals})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("comment updated", logrus.Fields{
@@ -145,8 +146,7 @@ func GetGroupsForUser(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-
-func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
+func GetUsersInGoal(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("setting comment", logrus.Fields{
 		"start_time": startTime})
@@ -166,10 +166,10 @@ func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var groupID = mux.Vars(r)["groupID"]
+	var goalID = mux.Vars(r)["goalID"]
 
-	SliceOfUsers, err := groupUserService.GetUsersInGroup( groupID)
-	// why not return (data, err) instead of err in RemoveUserFromGroup
+	SliceOfUsers, err := goalUserService.GetUsersInGoal(goalID)
+	// why not return (data, err) instead of err in RemoveUserFromGoal
 
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
@@ -179,7 +179,7 @@ func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data":SliceOfUsers })
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": SliceOfUsers})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("comment updated", logrus.Fields{
