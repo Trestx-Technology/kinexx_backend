@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	groupUserService = groupUserdb.NewGroupUserService(group_user.NewGroupUserRepository("group_user"))
+	groupUserService = groupUserdb.NewGroupUserService(group_user.NewGroupUserRepository("group_users"))
 )
 
 func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +48,7 @@ func AddUserToGroup(w http.ResponseWriter, r *http.Request) {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
 
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to set comment"})
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to set group"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -90,7 +90,7 @@ func RemoveUserFromGroup(w http.ResponseWriter, r *http.Request) {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
 
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to set comment"})
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to remove record"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -131,7 +131,7 @@ func GetGroupsForUser(w http.ResponseWriter, r *http.Request) {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
 
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to set comment"})
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "No group available"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -171,7 +171,7 @@ func GetUsersInGroup(w http.ResponseWriter, r *http.Request) {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set comment"))
 
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to set comment"})
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "No group available"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)

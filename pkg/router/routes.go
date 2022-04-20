@@ -3,6 +3,7 @@ package router
 import (
 	"encoding/json"
 	"kinexx_backend/pkg/services/account_service"
+	brand "kinexx_backend/pkg/services/brand_service"
 	chat "kinexx_backend/pkg/services/chat_service"
 	comment "kinexx_backend/pkg/services/comment_service"
 	connection "kinexx_backend/pkg/services/connection_service"
@@ -14,9 +15,13 @@ import (
 	movies "kinexx_backend/pkg/services/movies_service"
 	notification "kinexx_backend/pkg/services/notification_service"
 	post "kinexx_backend/pkg/services/post_service"
+	product "kinexx_backend/pkg/services/product_service"
 	"kinexx_backend/pkg/services/profile_service"
 	"kinexx_backend/pkg/services/rating_service"
 	share "kinexx_backend/pkg/services/share_service"
+	spot "kinexx_backend/pkg/services/spot_service"
+	store "kinexx_backend/pkg/services/store_service"
+	subscription "kinexx_backend/pkg/services/subscription_service"
 	"kinexx_backend/pkg/services/util_service"
 	"time"
 
@@ -470,6 +475,96 @@ var routes = Routes{
 		"GET",
 		"/goal",
 		goal.GetAllGoals,
+	},
+	Route{
+		"Brand",
+		"POST",
+		"/brand",
+		brand.Add,
+	},
+	Route{
+		"Brand",
+		"GET",
+		"/brand",
+		brand.GetMany,
+	},
+	Route{
+		"Brand",
+		"GET",
+		"/brand/{id}",
+		brand.GetDetails,
+	},
+	Route{
+		"Subscription",
+		"POST",
+		"/subscription",
+		subscription.Add,
+	},
+	Route{
+		"Subscription",
+		"GET",
+		"/subscription",
+		subscription.GetMany,
+	},
+	Route{
+		"Subscription",
+		"GET",
+		"/subscription/{id}",
+		subscription.GetDetails,
+	},
+	Route{
+		"Spot",
+		"POST",
+		"/spot",
+		spot.Add,
+	},
+	Route{
+		"Spot",
+		"GET",
+		"/spot/{id}",
+		spot.GetDetails,
+	},
+	Route{
+		"Spot",
+		"GET",
+		"/spot/{type}/{value}",
+		spot.GetMany,
+	},
+	Route{
+		"Store",
+		"POST",
+		"/store",
+		store.Add,
+	},
+	Route{
+		"Store",
+		"GET",
+		"/store/{id}",
+		store.GetDetails,
+	},
+	Route{
+		"Store",
+		"GET",
+		"/store/{type}/{value}",
+		store.GetMany,
+	},
+	Route{
+		"Product",
+		"POST",
+		"/product",
+		product.Add,
+	},
+	Route{
+		"Product",
+		"GET",
+		"/product/{id}",
+		product.GetDetails,
+	},
+	Route{
+		"Product",
+		"GET",
+		"/product/{type}/{value}",
+		product.GetMany,
 	},
 	Route{
 		"HEALTH",

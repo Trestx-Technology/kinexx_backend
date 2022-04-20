@@ -28,8 +28,10 @@ func (*groupService) MakeGroup(group *entity.GroupDB) (string, error) {
 		return "", err
 	}
 	if len(group.GoalIDList) > 0 {
+
 		utils.AddGroupToGoal(group.GoalIDList, group.ID.Hex())
 	}
+	group.UserIDList = append(group.UserIDList, group.CreatorUserID)
 	if len(group.UserIDList) > 0 {
 		for _, id := range group.UserIDList {
 			groupUserInternal.AddUserToGroupInternal(group.ID.Hex(), id)
