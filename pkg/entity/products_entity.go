@@ -10,13 +10,15 @@ type ProductDB struct {
 	ID              primitive.ObjectID `bson:"_id" json:"id"`
 	Logo            string             `bson:"logo" json:"logo"`
 	Banner          string             `bson:"banner" json:"banner"`
-	StoreName       string             `bson:"store_name" json:"store_name"`
+	Name            string             `bson:"name" json:"name"`
 	SpotID          string             `bson:"spot_id" json:"spot_id"`
 	StoreID         string             `bson:"store_id" json:"store_id"`
 	BrandID         string             `bson:"brand_id" json:"brand_id"`
 	PromoVideos     []string           `bson:"promo_videos" json:"promo_videos"`
 	Images          []string           `bson:"images" json:"images"`
 	Quantity        int                `bson:"quantity" json:"quantity"`
+	QRCode          string             `bson:"qr_code" json:"qr_code"`
+	QRImage         string             `bson:"qr_image" json:"qr_image"`
 	Type            string             `bson:"type" json:"type"`
 	Price           string             `bson:"price" json:"price"`
 	DiscountedPrice string             `bson:"discounted_price" json:"discounted_price"`
@@ -27,4 +29,5 @@ type ProductDB struct {
 	CreatorID       string             `bson:"creator_id" json:"creator_id"`
 	CreatedTime     time.Time          `bson:"created_time" json:"created_time"`
 	Status          string             `bson:"status" json:"status"`
+	Address         AddressDB          `bson:"address" json:"address"`
 }

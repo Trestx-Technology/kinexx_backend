@@ -418,6 +418,12 @@ var routes = Routes{
 	},
 	Route{
 		"Group",
+		"DELETE",
+		"/group/{groupID}",
+		group.DeleteGroup,
+	},
+	Route{
+		"Group",
 		"GET",
 		"/group/detail/{groupID}",
 		group.GetGroupDetail,
@@ -526,6 +532,12 @@ var routes = Routes{
 	},
 	Route{
 		"Spot",
+		"DELETE",
+		"/spot/{id}",
+		spot.DeleteSpot,
+	},
+	Route{
+		"Spot",
 		"GET",
 		"/spot/{type}/{value}",
 		spot.GetMany,
@@ -544,6 +556,12 @@ var routes = Routes{
 	},
 	Route{
 		"Store",
+		"DELETE",
+		"/store/{id}",
+		store.DeleteStore,
+	},
+	Route{
+		"Store",
 		"GET",
 		"/store/{type}/{value}",
 		store.GetMany,
@@ -559,6 +577,12 @@ var routes = Routes{
 		"GET",
 		"/product/{id}",
 		product.GetDetails,
+	},
+	Route{
+		"Product",
+		"DELETE",
+		"/product/{id}",
+		product.DeleteProduct,
 	},
 	Route{
 		"Product",
