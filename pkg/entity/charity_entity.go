@@ -7,13 +7,13 @@ import (
 )
 
 type CharityDB struct {
-	ID            primitive.ObjectID `bson:"_id" json:"id,omitempty"`
-	Icon          string             `json:"icon,omitempty"`
-	Name          string             `json:"name,omitempty"`
-	Description   string             `json:"description,omitempty"`
-	Banner        string             `json:"banner,omitempty"`
-	CreatedDate   time.Time          `json:"created_date,omitempty"`
-	CreatorUserID string             `json:"creator_user_id,omitempty"`
+	ID            primitive.ObjectID `bson:"_id" json:"id"`
+	Icon          string             `json:"icon"`
+	Name          string             `json:"name"`
+	Description   string             `json:"description"`
+	Banner        string             `json:"banner"`
+	CreatedDate   time.Time          `json:"created_date"`
+	CreatorUserID string             `json:"creator_user_id"`
 }
 
 type CharityGroupDB struct {

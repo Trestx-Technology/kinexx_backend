@@ -20,7 +20,7 @@ type ProfileService interface {
 }
 
 type Profile struct {
-	Status                  string      `bson:"status,omitempty" json:"status,omitempty"`
+	Status                  string      `bson:"status" json:"status"`
 	FirstName               string      `bson:"first_name" json:"firstName"`
 	Name                    string      `bson:"name" json:"name"`
 	DOB                     string      `bson:"dob" json:"dob"`
@@ -36,13 +36,13 @@ type Profile struct {
 	Featured                string      `bson:"featured" json:"featured"`
 	Speciality              []string    `bson:"speciality" json:"speciality"`
 	Categories              []string    `bson:"categories" json:"categories"`
-	Address                 string      `bson:"address" json:"address,omitempty"`
-	Country                 string      `bson:"country" json:"country,omitempty"`
-	Pin                     string      `bson:"pin" json:"pin,omitempty"`
-	City                    string      `bson:"city" json:"city,omitempty"`
-	State                   string      `bson:"state" json:"state,omitempty"`
-	About                   string      `bson:"about" json:"about,omitempty"`
-	UrlToProfileImage       string      `bson:"url_to_profile_image" json:"urlToProfileImage,omitempty"`
+	Address                 string      `bson:"address" json:"address"`
+	Country                 string      `bson:"country" json:"country"`
+	Pin                     string      `bson:"pin" json:"pin"`
+	City                    string      `bson:"city" json:"city"`
+	State                   string      `bson:"state" json:"state"`
+	About                   string      `bson:"about" json:"about"`
+	UrlToProfileImage       string      `bson:"url_to_profile_image" json:"urlToProfileImage"`
 	Movie                   string      `json:"movie"`
 	Hobby                   string      `json:"hobby"`
 	PortfolioVideo          string      `json:"portfolio_video"`

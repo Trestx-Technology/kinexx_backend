@@ -59,7 +59,7 @@ func (*groupUserService) GetGroupsForUser(userID string) ([]entity.GroupDB, erro
 	// why not giving error when not satisfying return value
 
 	filter := bson.M{"user_id": userID}
-	groupIDs, err := repo.Find(filter, bson.M{"group_id": 1, "_id": -1})
+	groupIDs, err := repo.Find(filter, bson.M{})
 	if err != nil {
 		return []entity.GroupDB{}, err
 	}
@@ -75,7 +75,7 @@ func (*groupUserService) GetUsersInGroup(groupID string) ([]entity.ProfileDB, er
 	var emptyslice []string
 
 	filter := bson.M{"group_id": groupID}
-	groupUserIDs, err := repo.Find(filter, bson.M{"user_id": 1})
+	groupUserIDs, err := repo.Find(filter, bson.M{})
 	if err != nil {
 		return []entity.ProfileDB{}, err
 	}

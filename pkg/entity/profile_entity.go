@@ -49,11 +49,12 @@ type ProfileDB struct {
 }
 
 type AddressDB struct {
-	Address string `bson:"address" json:"address"`
-	Country string `bson:"country" json:"country"`
-	Pin     string `bson:"pin" json:"pin"`
-	City    string `bson:"city" json:"city"`
-	State   string `bson:"state" json:"state"`
+	Address     string      `bson:"address" json:"address"`
+	Country     string      `bson:"country" json:"country"`
+	Pin         string      `bson:"pin" json:"pin"`
+	City        string      `bson:"city" json:"city"`
+	State       string      `bson:"state" json:"state"`
+	GeoLocation interface{} `bson:"geo_location" json:"geo_location,omitempty"`
 }
 
 type UnRegisteredUsersDB struct {
