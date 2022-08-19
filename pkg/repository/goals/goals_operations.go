@@ -3,9 +3,10 @@ package goals
 import (
 	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/mongo"
 	"kinexx_backend/pkg/entity"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -98,7 +99,11 @@ func (r *repo) Find(filter, projection bson.M) ([]entity.GoalDB, error) {
 			})
 		return nil, err
 	}
-	defer cursor.Close(context.Background())
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+		}
+	}(cursor, context.Background())
 	for cursor.Next(context.TODO()) {
 		var goal entity.GoalDB
 		if err = cursor.Decode(&goal); err != nil {

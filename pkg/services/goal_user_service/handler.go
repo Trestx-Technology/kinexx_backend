@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -125,7 +125,7 @@ func GetGoalsForUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var userID = mux.Vars(r)["userID"]
+	var userID = mux.Vars(r)["groupID"]
 
 	SliceOfGoals, err := goalUserService.GetGoalsForUser(userID)
 	// why not return (data, err) instead of err in RemoveUserFromGoal

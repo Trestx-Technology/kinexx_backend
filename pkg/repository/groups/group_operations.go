@@ -5,7 +5,7 @@ import (
 	"errors"
 	"kinexx_backend/pkg/entity"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -36,7 +36,6 @@ func (r *repo) InsertOne(document interface{}) (string, error) {
 	groupid := group.InsertedID.(primitive.ObjectID).Hex()
 	return groupid, nil
 }
-
 
 //used by update follow ,login and email verifcation
 func (r *repo) UpdateOne(filter, update bson.M) (string, error) {
@@ -144,4 +143,3 @@ func (r *repo) DeleteOne(filter bson.M) error {
 	}
 	return nil
 }
-

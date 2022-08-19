@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

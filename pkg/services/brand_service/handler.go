@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -121,6 +121,31 @@ func GetMany(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := brandService.GetAllBrands()
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to set brand"))
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to find brand"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("brand updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+
+func Search(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("setting brand", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	keyword := mux.Vars(r)["keyword"]
+	data, err := brandService.SearchBrands(keyword)
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to set brand"))
 

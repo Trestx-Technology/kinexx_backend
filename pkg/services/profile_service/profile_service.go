@@ -8,10 +8,11 @@ import (
 	"strings"
 	"time"
 
+	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/repository"
 	"kinexx_backend/pkg/services/profile_service/db"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/gorilla/mux"
 
 	"github.com/pkg/errors"
@@ -463,6 +464,42 @@ func GetUserProfile(w http.ResponseWriter, r *http.Request) {
 		"duration": duration,
 	})
 }
+func GetUserExperience(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("getting profile", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var userid = mux.Vars(r)["userid"]
+
+	data, err := profileService.GetExp(userid)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to get profile data"))
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "User Not Available"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("profile sent", logrus.Fields{
+		"duration": duration,
+	})
+}
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	trestCommon.DLogMap("updating profile", logrus.Fields{
@@ -547,6 +584,176 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("profile sent", logrus.Fields{
+		"duration": duration,
+	})
+}
+
+func AddExperience(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("updating profile", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	claims, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var experience entity.Experience
+	body, _ := ioutil.ReadAll(r.Body)
+	err = json.Unmarshal(body, &experience)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to unmarshal body"))
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	data, err := profileService.AddAndUpdateExperience(experience, "", claims["userid"].(string))
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to update profile"))
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("profile updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func UpdateExperience(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("updating profile", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	claims, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var experience entity.Experience
+	body, _ := ioutil.ReadAll(r.Body)
+	err = json.Unmarshal(body, &experience)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to unmarshal body"))
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	var experienceId = mux.Vars(r)["experienceId"]
+	data, err := profileService.AddAndUpdateExperience(experience, experienceId, claims["userid"].(string))
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to update profile"))
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("profile updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+
+func RemoveExperience(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("updating profile", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	claims, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var profile *db.Profile
+	body, _ := ioutil.ReadAll(r.Body)
+	err = json.Unmarshal(body, &profile)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to unmarshal body"))
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	var experienceId = mux.Vars(r)["experienceId"]
+	data, err := profileService.RemoveExperience(experienceId, claims["userid"].(string))
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to update profile"))
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("profile updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+
+func BlockUser(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("updating profile", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	claims, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+
+	var blockUserID = mux.Vars(r)["id"]
+	data, err := profileService.BlockUser(claims["userid"].(string), blockUserID)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to update profile"))
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to Update Profile"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("profile updated", logrus.Fields{
 		"duration": duration,
 	})
 }

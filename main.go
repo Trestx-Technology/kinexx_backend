@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/rs/cors"
 )
 

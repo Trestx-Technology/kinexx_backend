@@ -168,3 +168,29 @@ func (*groupService) PauseGroup(status, groupID string) (string, error) {
 
 	return repo.UpdateOne(filter, set)
 }
+func GetGroupByIDs(spotIDs []string) ([]entity.GroupDB, error) {
+	filter := bson.M{}
+	or := bson.A{}
+	for i := range spotIDs {
+		id, err := primitive.ObjectIDFromHex(spotIDs[i])
+		if err == nil {
+			or = append(or, bson.M{"_id": id})
+		}
+	}
+	if len(or) == 0 {
+		return []entity.GroupDB{}, nil
+	}
+	filter["$or"] = or
+	res, err := repo.Find(filter, bson.M{})
+	if err != nil {
+		return []entity.GroupDB{}, err
+	}
+	for i := range res {
+		res[i].Banner = utils.CreatePreSignedDownloadUrl(res[i].Banner)
+		res[i].Logo = utils.CreatePreSignedDownloadUrl(res[i].Logo)
+		for j := range res[i].PromoVideos {
+			res[i].PromoVideos[j] = utils.CreatePreSignedDownloadUrl(res[i].PromoVideos[j])
+		}
+	}
+	return res, nil
+}

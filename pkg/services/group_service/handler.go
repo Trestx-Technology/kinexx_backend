@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -51,6 +51,52 @@ func MakeGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := groupservice.MakeGroup(group)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to make group"))
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to make group"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("comment updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func EditGroup(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("making group", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	var group entity.GroupDB
+	body, _ := ioutil.ReadAll(r.Body)
+	err = json.Unmarshal(body, &group)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to unmarshal body"))
+		w.WriteHeader(http.StatusUnsupportedMediaType)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Something Went wrong"})
+		return
+	}
+	var groupID = mux.Vars(r)["groupID"]
+
+	data, err := groupservice.EditGroup(group, groupID)
 	if err != nil {
 		trestCommon.ECLog1(errors.Wrapf(err, "unable to make group"))
 

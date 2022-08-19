@@ -5,7 +5,7 @@ import (
 	"errors"
 	"kinexx_backend/pkg/entity"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -14,7 +14,7 @@ import (
 type repo struct {
 	CollectionName string
 }
- 
+
 //NewFirestoreRepository creates a new repo
 func NewNotificationRepository(collectionName string) NotificationRepository {
 	return &repo{

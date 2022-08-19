@@ -3,9 +3,10 @@ package chats
 import (
 	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/mongo"
 	"kinexx_backend/pkg/entity"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -41,7 +42,7 @@ func (r *repo) InsertOne(document interface{}) (string, error) {
 
 //used by update chat ,login and email verifcation
 func (r *repo) UpdateOne(filter, update bson.M) (string, error) {
-	result, err := trestCommon.UpdateOne(filter, update, r.CollectionName)
+	result, err := trestCommon.UpdateMany(filter, update, r.CollectionName)
 	if err != nil {
 		trestCommon.ECLog3(
 			"update chat",
@@ -100,7 +101,11 @@ func (r *repo) Find(filter, projection bson.M) ([]entity.Message, error) {
 			})
 		return nil, err
 	}
-	defer cursor.Close(context.Background())
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+		}
+	}(cursor, context.Background())
 	for cursor.Next(context.TODO()) {
 		var chat entity.Message
 		if err = cursor.Decode(&chat); err != nil {

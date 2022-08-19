@@ -16,6 +16,22 @@ var (
 
 type brandService struct{}
 
+// SearchBrands implements BrandService
+func (*brandService) SearchBrands(search string) ([]entity.BrandDB, error) {
+	res, err := repo.Find(bson.M{"brand_name": bson.M{"$regex": search, "$options": "i"}}, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	for i := range res {
+		res[i].Banner = utils.CreatePreSignedDownloadUrl(res[i].Banner)
+		res[i].Logo = utils.CreatePreSignedDownloadUrl(res[i].Logo)
+		for j := range res[i].PromoVideos {
+			res[i].PromoVideos[j] = utils.CreatePreSignedDownloadUrl(res[i].PromoVideos[j])
+		}
+	}
+	return res, nil
+}
+
 // AddBrand implements BrandService
 func (*brandService) AddBrand(brand *entity.BrandDB) (string, error) {
 	brand.ID = primitive.NewObjectID()

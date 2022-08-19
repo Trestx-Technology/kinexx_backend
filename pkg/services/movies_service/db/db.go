@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/ryanbradynd05/go-tmdb"
 	"github.com/spf13/viper"
 )

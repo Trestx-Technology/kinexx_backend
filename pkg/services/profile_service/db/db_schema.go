@@ -12,11 +12,15 @@ type ProfileService interface {
 	UpdateMovies(profile *Profile, userid string) (string, error)
 	ChangeUserStatus(userid string) (string, error)
 	GetProfile(userID string) (entity.ProfileDB, int64, error)
+	GetExp(userID string) ([]entity.Experience, error)
 	ChangePassword(profile *Profile, userid string) (string, error)
 	GetAllProfile(userID string) ([]entity.ProfileDB, error)
 	GetUserProfile(userID string) (entity.ProfileDB, int64, error)
 	SearchUser(search string) ([]entity.ProfileDB, error)
 	UpdateVideo(profile *Profile, userid string) (string, error)
+	AddAndUpdateExperience(exp entity.Experience, userID, experienceID string) (string, error)
+	RemoveExperience(experienceID, userID string) (string, error)
+	BlockUser(userID string, blockUserID string) (string, error)
 }
 
 type Profile struct {

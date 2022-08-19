@@ -3,9 +3,10 @@ package connections
 import (
 	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/mongo"
 	"kinexx_backend/pkg/entity"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -100,7 +101,11 @@ func (r *repo) Find(filter, projection bson.M) ([]entity.ConnectionDB, error) {
 			})
 		return nil, err
 	}
-	defer cursor.Close(context.Background())
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+		}
+	}(cursor, context.Background())
 	for cursor.Next(context.TODO()) {
 		var connection entity.ConnectionDB
 		if err = cursor.Decode(&connection); err != nil {

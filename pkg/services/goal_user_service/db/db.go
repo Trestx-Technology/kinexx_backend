@@ -54,7 +54,7 @@ func (*goalUserService) GetGoalsForUser(groupID string) ([]entity.GoalDB, error)
 	// why not giving error when not satisfying return value
 
 	filter := bson.M{"group_id": groupID}
-	goalIDs, err := repo.Find(filter, bson.M{"goal_id": 1, "_id": -1})
+	goalIDs, err := repo.Find(filter, bson.M{})
 	if err != nil {
 		return []entity.GoalDB{}, err
 	}

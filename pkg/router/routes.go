@@ -27,7 +27,7 @@ import (
 
 	"net/http"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -109,6 +109,42 @@ var routes = Routes{
 		"POST",
 		"/profile/update/movies",
 		profile_service.UpdateMovies,
+	},
+	Route{
+		"Experience",
+		"POST",
+		"/experience",
+		profile_service.AddExperience,
+	},
+	Route{
+		"Experience",
+		"GET",
+		"/experience/{userid}",
+		profile_service.GetUserExperience,
+	},
+	Route{
+		"Experience",
+		"PATCH",
+		"/experience/{experienceId}",
+		profile_service.UpdateExperience,
+	},
+	Route{
+		"block",
+		"PATCH",
+		"/block/{id}",
+		profile_service.BlockUser,
+	},
+	Route{
+		"block",
+		"PATCH",
+		"/unblock/{id}",
+		profile_service.BlockUser,
+	},
+	Route{
+		"Experience",
+		"DELETE",
+		"/experience/{experienceId}",
+		profile_service.RemoveExperience,
 	},
 	Route{
 		"set profile",
@@ -346,9 +382,21 @@ var routes = Routes{
 	},
 	Route{
 		"Chat",
+		"GET",
+		"/spot/chat/{senderID}",
+		chat.GetSpotChat,
+	},
+	Route{
+		"Chat",
 		"DELETE",
 		"/chat/{receiver}/{message}",
 		chat.DeleteChat,
+	},
+	Route{
+		"Chat",
+		"DELETE",
+		"/hide-chat/{receiver}",
+		chat.HideChat,
 	},
 	Route{
 		"Movie",
@@ -424,6 +472,12 @@ var routes = Routes{
 	},
 	Route{
 		"Group",
+		"PUT",
+		"/group/{groupID}",
+		group.EditGroup,
+	},
+	Route{
+		"Group",
 		"GET",
 		"/group/detail/{groupID}",
 		group.GetGroupDetail,
@@ -448,6 +502,12 @@ var routes = Routes{
 	},
 	Route{
 		"Group User",
+		"DELETE",
+		"/goal/{goalID}/{userID}",
+		goaluserservice.RemoveUserFromGoal,
+	},
+	Route{
+		"Group User",
 		"GET",
 		"/group/by/user/{userID}",
 		groupuserservice.GetGroupsForUser,
@@ -457,6 +517,12 @@ var routes = Routes{
 		"GET",
 		"/users/in/group/{groupID}",
 		groupuserservice.GetUsersInGroup,
+	},
+	Route{
+		"Group User",
+		"DELETE",
+		"/group/{groupID}/{userID}",
+		groupuserservice.RemoveUserFromGroup,
 	},
 	Route{
 		"Group User",
@@ -493,6 +559,12 @@ var routes = Routes{
 		"GET",
 		"/brand",
 		brand.GetMany,
+	},
+	Route{
+		"Brand",
+		"GET",
+		"/search-brand/{keyword}",
+		brand.Search,
 	},
 	Route{
 		"Brand",
@@ -571,6 +643,12 @@ var routes = Routes{
 		"POST",
 		"/product",
 		product.Add,
+	},
+	Route{
+		"Product",
+		"PUT",
+		"/product/{id}",
+		product.Update,
 	},
 	Route{
 		"Product",

@@ -46,6 +46,8 @@ type ProfileDB struct {
 	SelectedPortFolioVideo  string             `bson:"selected_portfolio_video" json:"selected_portfolio_video"`
 	ProfileVideo            []string           `bson:"profile_video" json:"profile_video"`
 	Online                  bool               `bson:"online" json:"online"`
+	Experiences             []Experience       `bson:"experiences" json:"experiences"`
+	Blocked                 []string           `bson:"blocked" json:"blocked"`
 }
 
 type AddressDB struct {

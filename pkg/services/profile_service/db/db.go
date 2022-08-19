@@ -11,7 +11,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/aekam27/trestCommon"
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 
@@ -430,8 +430,47 @@ func (*profileService) GetProfile(userID string) (entity.ProfileDB, int64, error
 	for j := range profile.ProfileVideo {
 		profile.ProfileVideo[j] = createPreSignedDownloadUrl(profile.ProfileVideo[j])
 	}
+	for j := range profile.Experiences {
+		profile.Experiences[j].Video = createPreSignedDownloadUrl(profile.Experiences[j].Video)
+	}
 	return profile, per, nil
 }
+
+func (*profileService) GetExp(userID string) ([]entity.Experience, error) {
+	if userID == "" {
+		err := errors.New("user id missing")
+		trestCommon.ECLog2(
+			"GetProfile section",
+			err,
+		)
+		return []entity.Experience{}, err
+	}
+	id, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		trestCommon.ECLog3(
+			"GetProfile section",
+			err,
+			logrus.Fields{
+				"user_id": userID,
+			},
+		)
+		return []entity.Experience{}, err
+	}
+	profile, err := repo.FindOne(bson.M{"_id": id}, bson.M{})
+	if err != nil {
+		trestCommon.ECLog2(
+			"GetProfile section",
+			err,
+		)
+		return []entity.Experience{}, err
+	}
+
+	for j := range profile.Experiences {
+		profile.Experiences[j].Video = createPreSignedDownloadUrl(profile.Experiences[j].Video)
+	}
+	return profile.Experiences, nil
+}
+
 func (*profileService) GetUserProfile(userID string) (entity.ProfileDB, int64, error) {
 	if userID == "" {
 		err := errors.New("user id missing")
@@ -481,6 +520,71 @@ func (*profileService) GetUserProfile(userID string) (entity.ProfileDB, int64, e
 	}
 	return profile, per, nil
 }
+func (*profileService) AddAndUpdateExperience(exp entity.Experience, experienceID, userID string) (string, error) {
+	uid, _ := primitive.ObjectIDFromHex(userID)
+	profile, err := repo.FindOne(bson.M{"_id": uid}, bson.M{})
+	if err != nil {
+		return "", err
+	}
+	if experienceID != "" {
+		id, _ := primitive.ObjectIDFromHex(experienceID)
+		for i := range profile.Experiences {
+			if profile.Experiences[i].ExperienceID == id {
+				exp.ExperienceID = id
+				profile.Experiences[i] = exp
+				break
+			}
+		}
+	} else {
+		exp.ExperienceID = primitive.NewObjectID()
+		profile.Experiences = append(profile.Experiences, exp)
+	}
+	set := bson.M{"experiences": profile.Experiences}
+
+	return repo.UpdateOne(bson.M{"_id": uid}, bson.M{"$set": set})
+}
+
+func (*profileService) BlockUser(userID string, blockUserID string) (string, error) {
+	uid, _ := primitive.ObjectIDFromHex(userID)
+	profile, err := repo.FindOne(bson.M{"_id": uid}, bson.M{})
+	if err != nil {
+		return "", err
+	}
+	found := false
+	for i := range profile.Blocked {
+		if profile.Blocked[i] == blockUserID {
+			profile.Blocked = append(profile.Blocked[:i], profile.Blocked[i+1:]...)
+			found = true
+			break
+		}
+	}
+	if !found {
+		profile.Blocked = append(profile.Blocked, blockUserID)
+	}
+	set := bson.M{"blocked": profile.Blocked}
+
+	return repo.UpdateOne(bson.M{"_id": uid}, bson.M{"$set": set})
+}
+
+func (*profileService) RemoveExperience(experienceID, userID string) (string, error) {
+	uid, _ := primitive.ObjectIDFromHex(userID)
+	profile, err := repo.FindOne(bson.M{"_id": uid}, bson.M{})
+	if err != nil {
+		return "", err
+	}
+	if experienceID != "" {
+		id, _ := primitive.ObjectIDFromHex(experienceID)
+		for i := range profile.Experiences {
+			if profile.Experiences[i].ExperienceID == id {
+				profile.Experiences = append(profile.Experiences[:i], profile.Experiences[i+1:]...)
+				break
+			}
+		}
+	}
+	set := bson.M{"experiences": profile.Experiences}
+
+	return repo.UpdateOne(bson.M{"_id": uid}, set)
+}
 
 func (*profileService) GetAllProfile(userID string) ([]entity.ProfileDB, error) {
 	if userID == "" {
@@ -521,6 +625,9 @@ func (*profileService) GetAllProfile(userID string) ([]entity.ProfileDB, error) 
 		for j := range profile[i].PortfolioVideos {
 			profile[i].PortfolioVideos[j] = createPreSignedDownloadUrl(profile[i].PortfolioVideos[j])
 		}
+		for j := range profile[i].Experiences {
+			profile[i].Experiences[j].Video = createPreSignedDownloadUrl(profile[i].Experiences[j].Video)
+		}
 		for j := range profile[i].ProfileVideo {
 			profile[i].ProfileVideo[j] = createPreSignedDownloadUrl(profile[i].ProfileVideo[j])
 		}
@@ -533,6 +640,7 @@ func (*profileService) GetAllProfile(userID string) ([]entity.ProfileDB, error) 
 	}
 	return profile, nil
 }
+
 func (*profileService) SearchUser(search string) ([]entity.ProfileDB, error) {
 	filter := bson.A{}
 	if search != "" {
@@ -558,6 +666,9 @@ func (*profileService) SearchUser(search string) ([]entity.ProfileDB, error) {
 		profile[i].SelectedPortFolioVideo = createPreSignedDownloadUrl(profile[i].SelectedPortFolioVideo)
 		for j := range profile[i].PortfolioVideos {
 			profile[i].PortfolioVideos[j] = createPreSignedDownloadUrl(profile[i].PortfolioVideos[j])
+		}
+		for j := range profile[i].Experiences {
+			profile[i].Experiences[j].Video = createPreSignedDownloadUrl(profile[i].Experiences[j].Video)
 		}
 		for j := range profile[i].ProfileVideo {
 			profile[i].ProfileVideo[j] = createPreSignedDownloadUrl(profile[i].ProfileVideo[j])
@@ -619,6 +730,9 @@ func GetProfilesForIDs(userIDs []string) ([]entity.ProfileDB, error) {
 			if newUrl != "" {
 				profile[prof].Featured = newUrl
 			}
+		}
+		for j := range profile[prof].Experiences {
+			profile[prof].Experiences[j].Video = createPreSignedDownloadUrl(profile[prof].Experiences[j].Video)
 		}
 		profiles = append(profiles, profile[prof])
 
