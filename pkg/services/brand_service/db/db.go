@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	brand "kinexx_backend/pkg/repository/brand"
+	"kinexx_backend/pkg/services/brand_service/brand"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	repo = brand.NewBrandRepository("brands")
+	repo = brands.NewBrandRepository("brands")
 )
 
 type brandService struct{}
@@ -85,7 +85,7 @@ func (*brandService) GetBrand(brandID string) (entity.BrandDB, error) {
 	return res, nil
 }
 
-func NewBrandService(repository brand.BrandRepository) BrandService {
+func NewBrandService(repository brands.BrandRepository) BrandService {
 	repo = repository
 	return &brandService{}
 }

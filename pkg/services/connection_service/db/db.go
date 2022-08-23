@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	connection "kinexx_backend/pkg/repository/connections"
+	"kinexx_backend/pkg/services/connection_service/connections"
 	"kinexx_backend/pkg/services/profile_service/db"
 	"kinexx_backend/pkg/utils"
 	"strings"
@@ -18,12 +18,12 @@ import (
 )
 
 var (
-	repo = connection.NewConnectionRepository("connections")
+	repo = connections.NewConnectionRepository("connections")
 )
 
 type connectionService struct{}
 
-func NewConnectionService(repository connection.ConnectionRepository) ConnectionService {
+func NewConnectionService(repository connections.ConnectionRepository) ConnectionService {
 	repo = repository
 	return &connectionService{}
 }

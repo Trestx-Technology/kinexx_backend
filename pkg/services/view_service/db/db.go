@@ -69,7 +69,9 @@ func (s service) GetAll() ([]viewEntity.ViewDB, error) {
 }
 
 func (s service) Get(viewID string, userID string) ([]viewEntity.ViewDB, error) {
-	repo.UpdateOne(bson.M{"view_id": viewID}, bson.M{"$inc": bson.M{"clicked": 1}, "$addToSet": bson.M{"clicked_by": userID}})
+	_, err := repo.UpdateOne(bson.M{"view_id": viewID}, bson.M{"$inc": bson.M{"clicked": 1}, "$addToSet": bson.M{"clicked_by": userID}})
+	if err != nil {
+	}
 	var pipeline = bson.A{
 		bson.M{"$match": bson.M{"view_id": viewID}},
 		bson.M{"$lookup": bson.M{

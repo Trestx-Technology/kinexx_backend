@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/comments"
+	comments2 "kinexx_backend/pkg/services/comment_service/comments"
 	"kinexx_backend/pkg/services/profile_service/db"
 	"kinexx_backend/pkg/utils"
 
@@ -17,12 +17,12 @@ import (
 )
 
 var (
-	repo = comments.NewCommentRepository("comments")
+	repo = comments2.NewCommentRepository("comments")
 )
 
 type commentService struct{}
 
-func NewCommentService(repository comments.CommentRepository) CommentService {
+func NewCommentService(repository comments2.CommentRepository) CommentService {
 	repo = repository
 	return &commentService{}
 }

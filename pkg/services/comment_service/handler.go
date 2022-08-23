@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
-	comment "kinexx_backend/pkg/repository/comments"
+	comment "kinexx_backend/pkg/services/comment_service/comments"
 	"kinexx_backend/pkg/services/comment_service/db"
 	"net/http"
 	"strings"

@@ -2,7 +2,7 @@ package notification_db
 
 import (
 	"kinexx_backend/pkg/entity"
-	notification "kinexx_backend/pkg/repository/notifications"
+	"kinexx_backend/pkg/services/notification_service/notifications"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	repo = notification.NewNotificationRepository("notifications")
+	repo = notifications.NewNotificationRepository("notifications")
 )
 
 type notificationService struct{}
 
-func NewNotificationService(repository notification.NotificationRepository) NotificationService {
+func NewNotificationService(repository notifications.NotificationRepository) NotificationService {
 	repo = repository
 	return &notificationService{}
 }

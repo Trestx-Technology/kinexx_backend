@@ -1,7 +1,7 @@
 package groupUserInternal
 
 import (
-	"kinexx_backend/pkg/repository/groups/group_user"
+	"kinexx_backend/pkg/services/group_user_service/group_user"
 
 	"errors"
 	"time"

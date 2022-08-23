@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	store "kinexx_backend/pkg/repository/store"
+	"kinexx_backend/pkg/services/store_service/store"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	repo = store.NewStoreRepository("stores")
+	repo = stores.NewStoreRepository("stores")
 )
 
 type storeService struct{}
@@ -82,7 +82,7 @@ func (*storeService) GetShop(shopID string) (entity.ShopDB, error) {
 	return res, nil
 }
 
-func NewStoreService(repository store.StoreRepository) StoreService {
+func NewStoreService(repository stores.StoreRepository) StoreService {
 	repo = repository
 	return &storeService{}
 }

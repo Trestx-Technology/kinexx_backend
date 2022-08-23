@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	product "kinexx_backend/pkg/repository/product"
+	"kinexx_backend/pkg/services/product_service/product"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	repo = product.NewProductRepository("products")
+	repo = products.NewProductRepository("products")
 )
 
 type productService struct{}
@@ -163,7 +163,7 @@ func (*productService) GetProduct(productID string) (entity.ProductDB, error) {
 	return res, nil
 }
 
-func NewProductService(repository product.ProductRepository) ProductService {
+func NewProductService(repository products.ProductRepository) ProductService {
 	repo = repository
 	return &productService{}
 }

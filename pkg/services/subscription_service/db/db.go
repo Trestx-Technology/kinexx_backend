@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	subscription "kinexx_backend/pkg/repository/subscriptions"
+	"kinexx_backend/pkg/services/subscription_service/subscriptions"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	repo = subscription.NewSubscriptionsRepository("subscriptions")
+	repo = subcrriptions.NewSubscriptionsRepository("subscriptions")
 )
 
 type subscriptionService struct{}
@@ -59,7 +59,7 @@ func (*subscriptionService) GetSubscription(subscriptionID string) (entity.Subsc
 	return res, nil
 }
 
-func NewSubscriptionService(repository subscription.SubscriptionsRepository) SubscriptionService {
+func NewSubscriptionService(repository subcrriptions.SubscriptionsRepository) SubscriptionService {
 	repo = repository
 	return &subscriptionService{}
 }

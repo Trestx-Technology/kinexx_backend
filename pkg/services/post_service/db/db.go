@@ -2,8 +2,8 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	post "kinexx_backend/pkg/repository/posts"
 	comment_db "kinexx_backend/pkg/services/comment_service/db"
+	post2 "kinexx_backend/pkg/services/post_service/posts"
 	"kinexx_backend/pkg/services/profile_service/db"
 	share "kinexx_backend/pkg/services/share_service/db"
 
@@ -20,12 +20,12 @@ import (
 )
 
 var (
-	repo = post.NewPostRepository("posts")
+	repo = post2.NewPostRepository("posts")
 )
 
 type postService struct{}
 
-func NewPostService(repository post.PostRepository) PostService {
+func NewPostService(repository post2.PostRepository) PostService {
 	repo = repository
 	return &postService{}
 }

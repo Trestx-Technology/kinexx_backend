@@ -2,8 +2,8 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	share "kinexx_backend/pkg/repository/share"
 	"kinexx_backend/pkg/services/profile_service/db"
+	"kinexx_backend/pkg/services/share_service/share"
 	"kinexx_backend/pkg/utils"
 
 	"strings"
@@ -19,12 +19,12 @@ import (
 )
 
 var (
-	repo = share.NewShareRepository("shares")
+	repo = shares.NewShareRepository("shares")
 )
 
 type shareService struct{}
 
-func NewShareService(repository share.ShareRepository) ShareService {
+func NewShareService(repository shares.ShareRepository) ShareService {
 	repo = repository
 	return &shareService{}
 }

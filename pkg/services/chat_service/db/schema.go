@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/entity"
+)
 
 type ChatService interface {
 	SendMessage(message *entity.Message) ([]entity.Message, error)

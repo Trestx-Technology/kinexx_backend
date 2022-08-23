@@ -2,9 +2,9 @@ package rating_db
 
 import (
 	"kinexx_backend/pkg/entity"
-	rating "kinexx_backend/pkg/repository/ratings"
 	postDB "kinexx_backend/pkg/services/post_service/db"
 	"kinexx_backend/pkg/services/profile_service/db"
+	"kinexx_backend/pkg/services/rating_service/ratings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	repo = rating.NewRatingRepository("ratings")
+	repo = ratings.NewRatingRepository("ratings")
 )
 
 type ratingService struct{}
 
-func NewRatingService(repository rating.RatingRepository) RatingService {
+func NewRatingService(repository ratings.RatingRepository) RatingService {
 	repo = repository
 	return &ratingService{}
 }

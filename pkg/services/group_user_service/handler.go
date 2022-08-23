@@ -2,8 +2,8 @@ package groupuserservice
 
 import (
 	"encoding/json"
-	"kinexx_backend/pkg/repository/groups/group_user"
 	groupUserdb "kinexx_backend/pkg/services/group_user_service/db"
+	"kinexx_backend/pkg/services/group_user_service/group_user"
 	"net/http"
 	"strings"
 	"time"

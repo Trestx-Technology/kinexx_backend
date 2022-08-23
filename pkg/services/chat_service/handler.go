@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
-	chat "kinexx_backend/pkg/repository/chats"
+	chat "kinexx_backend/pkg/services/chat_service/chats"
 	"kinexx_backend/pkg/services/chat_service/db"
 	"net/http"
 	"strings"

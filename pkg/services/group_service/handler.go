@@ -2,10 +2,11 @@ package groupservice
 
 import (
 	"encoding/json"
+	"kinexx_backend/pkg/services/group_service/groups"
+
 	// "go/token"
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/groups"
 	groupDB "kinexx_backend/pkg/services/group_service/db"
 	"net/http"
 	"strings"

@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/entity"
+)
 
 type CommentService interface {
 	AddComment(comment *entity.CommentDB) (string, error)

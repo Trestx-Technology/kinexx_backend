@@ -2,9 +2,9 @@ package goalGroupdb
 
 import (
 	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/goal_user_service/goals_group"
 
 	"errors"
-	goal_group "kinexx_backend/pkg/repository/goals/goals_group"
 	goalDB "kinexx_backend/pkg/services/goal_service/db"
 	groupDB "kinexx_backend/pkg/services/group_service/db"
 	"time"

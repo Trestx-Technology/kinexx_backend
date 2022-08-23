@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
-	connection "kinexx_backend/pkg/repository/connections"
+	connection "kinexx_backend/pkg/services/connection_service/connections"
 	"kinexx_backend/pkg/services/connection_service/db"
 	"net/http"
 	"strings"

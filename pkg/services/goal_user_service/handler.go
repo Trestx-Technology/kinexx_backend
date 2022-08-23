@@ -2,9 +2,8 @@ package goaluserservice
 
 import (
 	"encoding/json"
-	// "io/ioutil"
-	// "kinexx_backend/pkg/entity"
-	goal_group "kinexx_backend/pkg/repository/goals/goals_group"
+	goal_group "kinexx_backend/pkg/services/goal_user_service/goals_group"
+
 	goalGroupdb "kinexx_backend/pkg/services/goal_user_service/db"
 
 	"net/http"

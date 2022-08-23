@@ -2,8 +2,8 @@ package notification_service
 
 import (
 	"encoding/json"
-	notification "kinexx_backend/pkg/repository/notifications"
 	db "kinexx_backend/pkg/services/notification_service/db"
+	notification "kinexx_backend/pkg/services/notification_service/notifications"
 	"net/http"
 	"strings"
 	"time"

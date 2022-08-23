@@ -2,7 +2,7 @@ package goalDB
 
 import (
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/goals"
+	goals2 "kinexx_backend/pkg/services/goal_service/goals"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	repo = goals.NewGoalRepository("goals")
+	repo = goals2.NewGoalRepository("goals")
 )
 
 type goalService struct{}
@@ -109,7 +109,7 @@ func GetGoalsByIDs(goalIDs []string) ([]entity.GoalDB, error) {
 	}
 	return goals, err
 }
-func NewGoalService(repository goals.GoalRepository) GoalService {
+func NewGoalService(repository goals2.GoalRepository) GoalService {
 	repo = repository
 	return &goalService{}
 }

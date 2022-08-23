@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"kinexx_backend/pkg/entity"
-	brand "kinexx_backend/pkg/repository/brand"
+	brand "kinexx_backend/pkg/services/brand_service/brand"
 	"kinexx_backend/pkg/services/brand_service/db"
 	"net/http"
 	"strings"

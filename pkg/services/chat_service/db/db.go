@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	chat "kinexx_backend/pkg/repository/chats"
+	"kinexx_backend/pkg/services/chat_service/chats"
 	groupDB "kinexx_backend/pkg/services/group_service/db"
 	"kinexx_backend/pkg/services/profile_service/db"
 	"kinexx_backend/pkg/utils"
@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	repo = chat.NewChatRepository("chats")
+	repo = chats.NewChatRepository("chats")
 )
 
 type chatService struct{}
@@ -40,7 +40,7 @@ func (*chatService) GetSpotsChat(spotID string) ([]entity.Message, error) {
 	return chats, nil
 }
 
-func NewChatService(repository chat.ChatRepository) ChatService {
+func NewChatService(repository chats.ChatRepository) ChatService {
 	repo = repository
 	return &chatService{}
 }

@@ -2,7 +2,7 @@ package groupDB
 
 import (
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository/groups"
+	groups2 "kinexx_backend/pkg/services/group_service/groups"
 	groupUserInternal "kinexx_backend/pkg/services/group_user_service/db_internal"
 	"kinexx_backend/pkg/services/profile_service/db"
 	"kinexx_backend/pkg/utils"
@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	repo = groups.NewGroupRepository("groups")
+	repo = groups2.NewGroupRepository("groups")
 )
 
 type groupService struct{}
@@ -144,7 +144,7 @@ func GetGroupsByIDs(groupIDs []string) ([]entity.GroupDB, error) {
 	}
 	return groups, err
 }
-func NewGroupService(repository groups.GroupRepository) GroupService {
+func NewGroupService(repository groups2.GroupRepository) GroupService {
 	repo = repository
 	return &groupService{}
 }

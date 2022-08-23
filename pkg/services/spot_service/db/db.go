@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	spot "kinexx_backend/pkg/repository/spot"
+	"kinexx_backend/pkg/services/spot_service/spot"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	repo = spot.NewSpotRepository("spots")
+	repo = spots.NewSpotRepository("spots")
 )
 
 type spotService struct{}
@@ -78,7 +78,7 @@ func (*spotService) GetSpot(spotID string) (entity.SpotDB, error) {
 	return res, nil
 }
 
-func NewSpotService(repository spot.SpotRepository) SpotService {
+func NewSpotService(repository spots.SpotRepository) SpotService {
 	repo = repository
 	return &spotService{}
 }

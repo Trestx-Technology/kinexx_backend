@@ -2,7 +2,7 @@ package dbInternal
 
 import (
 	"errors"
-	goal_group "kinexx_backend/pkg/repository/goals/goals_group"
+	goal_group "kinexx_backend/pkg/services/goal_user_service/goals_group"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
