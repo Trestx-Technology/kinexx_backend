@@ -1,7 +1,7 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/comment_service/entity"
 )
 
 type CommentService interface {

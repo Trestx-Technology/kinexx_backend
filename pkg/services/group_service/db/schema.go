@@ -1,6 +1,8 @@
 package groupDB
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/group_service/entity"
+)
 
 type GroupService interface {
 	MakeGroup(group *entity.GroupDB) (string, error)

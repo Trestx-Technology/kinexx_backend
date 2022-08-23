@@ -3,7 +3,7 @@ package rating_service
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/rating_service/entity"
 	"kinexx_backend/pkg/services/rating_service/rating_db"
 	rating "kinexx_backend/pkg/services/rating_service/ratings"
 	"net/http"

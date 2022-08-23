@@ -3,8 +3,8 @@ package spotservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/spot_service/db"
+	"kinexx_backend/pkg/services/spot_service/entity"
 	spot "kinexx_backend/pkg/services/spot_service/spot"
 	"net/http"
 	"strings"

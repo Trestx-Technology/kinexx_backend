@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/subscription_service/entity"
+)
 
 type SubscriptionService interface {
 	AddSubscription(subscription *entity.SubscriptionType) (string, error)

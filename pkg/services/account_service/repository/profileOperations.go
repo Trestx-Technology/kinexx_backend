@@ -3,12 +3,11 @@ package repository
 import (
 	"context"
 	"errors"
-	"kinexx_backend/pkg/entity"
-
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"kinexx_backend/pkg/entity"
 )
 
 type repo struct {

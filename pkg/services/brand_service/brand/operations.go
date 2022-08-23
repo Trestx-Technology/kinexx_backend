@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/brand_service/entity"
 )
 
 type repo struct {

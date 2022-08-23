@@ -3,8 +3,8 @@ package subscriptionservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/subscription_service/db"
+	"kinexx_backend/pkg/services/subscription_service/entity"
 	subscription "kinexx_backend/pkg/services/subscription_service/subscriptions"
 	"net/http"
 	"strings"

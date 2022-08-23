@@ -3,9 +3,9 @@ package commentservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	comment "kinexx_backend/pkg/services/comment_service/comments"
 	"kinexx_backend/pkg/services/comment_service/db"
+	"kinexx_backend/pkg/services/comment_service/entity"
 	"net/http"
 	"strings"
 	"time"

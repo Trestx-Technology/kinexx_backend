@@ -3,9 +3,9 @@ package connectionservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	connection "kinexx_backend/pkg/services/connection_service/connections"
 	"kinexx_backend/pkg/services/connection_service/db"
+	"kinexx_backend/pkg/services/connection_service/entity"
 	"net/http"
 	"strings"
 	"time"

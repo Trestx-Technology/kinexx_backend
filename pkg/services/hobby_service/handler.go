@@ -3,8 +3,8 @@ package hobby_service
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	db "kinexx_backend/pkg/services/hobby_service/db"
+	"kinexx_backend/pkg/services/hobby_service/entity"
 	"net/http"
 	"strings"
 	"time"

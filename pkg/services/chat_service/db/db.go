@@ -1,8 +1,8 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/chat_service/chats"
+	"kinexx_backend/pkg/services/chat_service/entity"
 	groupDB "kinexx_backend/pkg/services/group_service/db"
 	"kinexx_backend/pkg/services/profile_service/db"
 	"kinexx_backend/pkg/utils"

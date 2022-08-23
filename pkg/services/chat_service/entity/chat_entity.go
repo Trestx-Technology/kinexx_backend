@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"kinexx_backend/pkg/entity"
+	entity2 "kinexx_backend/pkg/services/group_service/entity"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -8,9 +10,9 @@ import (
 
 type Message struct {
 	ID              primitive.ObjectID `bson:"_id" json:"id"`
-	Sender          ProfileDB          `json:"sender"`
-	Receiver        ProfileDB          `json:"receiver"`
-	Squad           GroupDB            `json:"squat"`
+	Sender          entity.ProfileDB   `json:"sender"`
+	Receiver        entity.ProfileDB   `json:"receiver"`
+	Squad           entity2.GroupDB    `json:"squat"`
 	Group           bool               `bson:"group" json:"group"`
 	SenderID        string             `bson:"sender_id" json:"sender_id"`
 	ReceiverID      string             `bson:"receiver_id" json:"receiver_id"`

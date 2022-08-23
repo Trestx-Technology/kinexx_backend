@@ -1,6 +1,9 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	entity2 "kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/post_service/entity"
+)
 
 type PostService interface {
 	AddPost(post *entity.PostDB) (string, error)
@@ -10,8 +13,8 @@ type PostService interface {
 	GetPostByPostID(postID string) (entity.PostDB, error)
 	LikePost(post, userID string) (string, error)
 	DeletePost(post string) error
-	LikedPost(post string) ([]entity.ProfileDB, error)
-	SharedPost(post string) ([]entity.ProfileDB, error)
+	LikedPost(post string) ([]entity2.ProfileDB, error)
+	SharedPost(post string) ([]entity2.ProfileDB, error)
 	DisLikePost(post, userID string) (string, error)
-	GetUserData(user string) (entity.ProfileDB, []entity.PostDB, error)
+	GetUserData(user string) (entity2.ProfileDB, []entity.PostDB, error)
 }

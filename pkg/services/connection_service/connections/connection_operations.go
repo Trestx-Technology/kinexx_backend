@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"go.mongodb.org/mongo-driver/mongo"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/connection_service/entity"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"

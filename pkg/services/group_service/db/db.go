@@ -1,7 +1,7 @@
 package groupDB
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/group_service/entity"
 	groups2 "kinexx_backend/pkg/services/group_service/groups"
 	groupUserInternal "kinexx_backend/pkg/services/group_user_service/db_internal"
 	"kinexx_backend/pkg/services/profile_service/db"

@@ -1,8 +1,8 @@
 package account_service
 
 import (
-	"kinexx_backend/pkg/repository"
 	db "kinexx_backend/pkg/services/account_service/dbs"
+	"kinexx_backend/pkg/services/account_service/repository"
 	"strconv"
 
 	"encoding/json"

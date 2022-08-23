@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/store_service/entity"
+)
 
 type StoreService interface {
 	AddShop(shop *entity.ShopDB) (string, error)

@@ -3,8 +3,8 @@ package goalservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	goalDB "kinexx_backend/pkg/services/goal_service/db"
+	"kinexx_backend/pkg/services/goal_service/entity"
 	"kinexx_backend/pkg/services/goal_service/goals"
 	"net/http"
 	"strings"

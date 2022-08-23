@@ -2,7 +2,7 @@ package brands
 
 import (
 	"go.mongodb.org/mongo-driver/bson"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/brand_service/entity"
 )
 
 type BrandRepository interface {

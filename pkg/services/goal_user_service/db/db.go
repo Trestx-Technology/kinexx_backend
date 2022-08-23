@@ -1,8 +1,9 @@
 package goalGroupdb
 
 import (
-	"kinexx_backend/pkg/entity"
+	entity2 "kinexx_backend/pkg/services/goal_service/entity"
 	"kinexx_backend/pkg/services/goal_user_service/goals_group"
+	"kinexx_backend/pkg/services/group_service/entity"
 
 	"errors"
 	goalDB "kinexx_backend/pkg/services/goal_service/db"
@@ -49,14 +50,14 @@ func (*goalUserService) RemoveUserFromGoal(groupID, goalID string) error {
 	return repo.DeleteOne(filter)
 }
 
-func (*goalUserService) GetGoalsForUser(groupID string) ([]entity.GoalDB, error) {
+func (*goalUserService) GetGoalsForUser(groupID string) ([]entity2.GoalDB, error) {
 	var emptyslice []string
 	// why not giving error when not satisfying return value
 
 	filter := bson.M{"group_id": groupID}
 	goalIDs, err := repo.Find(filter, bson.M{})
 	if err != nil {
-		return []entity.GoalDB{}, err
+		return []entity2.GoalDB{}, err
 	}
 	for _, goal := range goalIDs {
 		emptyslice = append(emptyslice, goal.GoalID)

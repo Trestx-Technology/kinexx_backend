@@ -1,7 +1,7 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/product_service/entity"
 	"kinexx_backend/pkg/services/product_service/product"
 	"kinexx_backend/pkg/utils"
 	"time"

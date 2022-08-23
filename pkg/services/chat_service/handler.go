@@ -3,9 +3,9 @@ package chatservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	chat "kinexx_backend/pkg/services/chat_service/chats"
 	"kinexx_backend/pkg/services/chat_service/db"
+	"kinexx_backend/pkg/services/chat_service/entity"
 	"net/http"
 	"strings"
 	"time"

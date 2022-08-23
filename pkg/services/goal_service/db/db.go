@@ -1,7 +1,7 @@
 package goalDB
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/goal_service/entity"
 	goals2 "kinexx_backend/pkg/services/goal_service/goals"
 	"kinexx_backend/pkg/utils"
 	"time"

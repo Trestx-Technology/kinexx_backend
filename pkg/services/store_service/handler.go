@@ -3,8 +3,8 @@ package storeservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/store_service/db"
+	"kinexx_backend/pkg/services/store_service/entity"
 	store "kinexx_backend/pkg/services/store_service/store"
 	"net/http"
 	"strings"

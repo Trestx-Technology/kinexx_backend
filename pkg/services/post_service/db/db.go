@@ -1,8 +1,9 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
+	entity2 "kinexx_backend/pkg/entity"
 	comment_db "kinexx_backend/pkg/services/comment_service/db"
+	"kinexx_backend/pkg/services/post_service/entity"
 	post2 "kinexx_backend/pkg/services/post_service/posts"
 	"kinexx_backend/pkg/services/profile_service/db"
 	share "kinexx_backend/pkg/services/share_service/db"
@@ -91,7 +92,7 @@ func (*postService) GetPost(postType string) ([]entity.PostDB, error) {
 		if len(sharedByUsersIDs) > 0 {
 			sharedByUsers, _ := db.GetProfilesForIDs(sharedByUsersIDs)
 			for _, use := range sharedByUsers {
-				post[id].SharedByUsers = []entity.ProfileDB{use}
+				post[id].SharedByUsers = []entity2.ProfileDB{use}
 				post[id].SharedInstance = true
 				post[id].ShareCount = len(sharedByUsersIDs)
 				posts = append(posts, post[id])
@@ -115,7 +116,7 @@ func (*postService) GetPost(postType string) ([]entity.PostDB, error) {
 	}
 	return posts, nil
 }
-func (*postService) LikedPost(postID string) ([]entity.ProfileDB, error) {
+func (*postService) LikedPost(postID string) ([]entity2.ProfileDB, error) {
 	id, _ := primitive.ObjectIDFromHex(postID)
 	filter := bson.M{"_id": id}
 
@@ -125,12 +126,12 @@ func (*postService) LikedPost(postID string) ([]entity.ProfileDB, error) {
 			"GetPost section",
 			err,
 		)
-		return []entity.ProfileDB{}, err
+		return []entity2.ProfileDB{}, err
 	}
 	return db.GetProfilesForIDs(post.LikedBy)
 
 }
-func (*postService) SharedPost(post string) ([]entity.ProfileDB, error) {
+func (*postService) SharedPost(post string) ([]entity2.ProfileDB, error) {
 	sharedByUsersIDs, _ := share.GetShareByPostID(post)
 	return db.GetProfilesForIDs(sharedByUsersIDs)
 
@@ -206,7 +207,7 @@ func (*postService) GetPostByID(user string, postType string) ([]entity.PostDB, 
 		if len(sharedByUsersIDs) > 0 {
 			sharedByUsers, _ := db.GetProfilesForIDs(sharedByUsersIDs)
 			for _, use := range sharedByUsers {
-				post[id].SharedByUsers = []entity.ProfileDB{use}
+				post[id].SharedByUsers = []entity2.ProfileDB{use}
 				post[id].SharedInstance = true
 				posts = append(posts, post[id])
 			}
@@ -230,14 +231,14 @@ func (*postService) GetPostByID(user string, postType string) ([]entity.PostDB, 
 	return posts, nil
 }
 
-func (*postService) GetUserData(user string) (entity.ProfileDB, []entity.PostDB, error) {
+func (*postService) GetUserData(user string) (entity2.ProfileDB, []entity.PostDB, error) {
 	users, err := db.GetProfilesForIDs([]string{user})
 	if err != nil {
 		trestCommon.ECLog2(
 			"GetPost section",
 			err,
 		)
-		return entity.ProfileDB{}, []entity.PostDB{}, err
+		return entity2.ProfileDB{}, []entity.PostDB{}, err
 	}
 	users[0].Password = ""
 	filter := bson.M{"user_id": user}
@@ -269,7 +270,7 @@ func (*postService) GetUserData(user string) (entity.ProfileDB, []entity.PostDB,
 		if len(sharedByUsersIDs) > 0 {
 			sharedByUsers, _ := db.GetProfilesForIDs(sharedByUsersIDs)
 			for _, use := range sharedByUsers {
-				post[id].SharedByUsers = []entity.ProfileDB{use}
+				post[id].SharedByUsers = []entity2.ProfileDB{use}
 				post[id].SharedInstance = true
 				posts = append(posts, post[id])
 			}
@@ -292,14 +293,14 @@ func (*postService) GetUserData(user string) (entity.ProfileDB, []entity.PostDB,
 	}
 	return users[0], posts, nil
 }
-func GetUserDataInternal(user string) (entity.ProfileDB, []entity.PostDB, error) {
+func GetUserDataInternal(user string) (entity2.ProfileDB, []entity.PostDB, error) {
 	users, err := db.GetProfilesForIDs([]string{user})
 	if err != nil {
 		trestCommon.ECLog2(
 			"GetPost section",
 			err,
 		)
-		return entity.ProfileDB{}, []entity.PostDB{}, err
+		return entity2.ProfileDB{}, []entity.PostDB{}, err
 	}
 	users[0].Password = ""
 	filter := bson.M{"user_id": user}
@@ -331,7 +332,7 @@ func GetUserDataInternal(user string) (entity.ProfileDB, []entity.PostDB, error)
 		if len(sharedByUsersIDs) > 0 {
 			sharedByUsers, _ := db.GetProfilesForIDs(sharedByUsersIDs)
 			for _, use := range sharedByUsers {
-				post[id].SharedByUsers = []entity.ProfileDB{use}
+				post[id].SharedByUsers = []entity2.ProfileDB{use}
 				post[id].SharedInstance = true
 				posts = append(posts, post[id])
 			}

@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/spot_service/entity"
+)
 
 type SpotService interface {
 	AddSpot(spot *entity.SpotDB) (string, error)

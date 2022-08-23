@@ -1,9 +1,8 @@
 package repository
 
 import (
-	"kinexx_backend/pkg/entity"
-
 	"go.mongodb.org/mongo-driver/bson"
+	"kinexx_backend/pkg/entity"
 )
 
 type ProfileRepository interface {

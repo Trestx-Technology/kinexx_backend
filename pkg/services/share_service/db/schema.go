@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/share_service/entity"
+)
 
 type ShareService interface {
 	AddShare(post *entity.ShareDB) (string, error)

@@ -1,7 +1,7 @@
 package hobby_db
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/hobby_service/entity"
 	"kinexx_backend/pkg/services/hobby_service/hobbies"
 	"kinexx_backend/pkg/utils"
 

@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/connection_service/entity"
+)
 
 type ConnectionService interface {
 	AddConnection(post *entity.ConnectionDB) (string, error)

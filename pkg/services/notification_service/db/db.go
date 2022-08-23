@@ -1,7 +1,7 @@
 package notification_db
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/notification_service/entity"
 	"kinexx_backend/pkg/services/notification_service/notifications"
 	"time"
 

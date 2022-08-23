@@ -1,11 +1,11 @@
 package notifications
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/notification_service/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
- 
+
 type NotificationRepository interface {
 	InsertOne(document interface{}) (string, error)
 	FindOne(filter, projection bson.M) (entity.NotiFicationMessage, error)
@@ -14,6 +14,3 @@ type NotificationRepository interface {
 	UpdateOne(filter, update bson.M) (string, error)
 	DeleteOne(filter bson.M) error
 }
-
-
-

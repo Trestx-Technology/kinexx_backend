@@ -1,8 +1,8 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/profile_service/db"
+	"kinexx_backend/pkg/services/share_service/entity"
 	"kinexx_backend/pkg/services/share_service/share"
 	"kinexx_backend/pkg/utils"
 

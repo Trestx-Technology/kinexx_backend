@@ -1,7 +1,7 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/chat_service/entity"
 )
 
 type ChatService interface {

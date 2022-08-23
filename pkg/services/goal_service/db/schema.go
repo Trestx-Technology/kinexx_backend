@@ -1,6 +1,8 @@
 package goalDB
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/goal_service/entity"
+)
 
 type GoalService interface {
 	MakeGoal(goal *entity.GoalDB) (string, error)

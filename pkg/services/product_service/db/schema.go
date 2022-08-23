@@ -1,6 +1,8 @@
 package db
 
-import "kinexx_backend/pkg/entity"
+import (
+	"kinexx_backend/pkg/services/product_service/entity"
+)
 
 type ProductService interface {
 	AddProduct(product *entity.ProductDB) (string, error)

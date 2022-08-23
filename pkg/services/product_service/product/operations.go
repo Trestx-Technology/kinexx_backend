@@ -3,7 +3,7 @@ package products
 import (
 	"context"
 	"errors"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/product_service/entity"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"

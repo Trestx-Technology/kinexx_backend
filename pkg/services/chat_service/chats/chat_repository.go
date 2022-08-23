@@ -2,7 +2,7 @@ package chats
 
 import (
 	"go.mongodb.org/mongo-driver/bson"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/chat_service/entity"
 )
 
 type ChatRepository interface {

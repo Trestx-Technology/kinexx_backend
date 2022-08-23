@@ -3,8 +3,8 @@ package postservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/post_service/db"
+	"kinexx_backend/pkg/services/post_service/entity"
 	"kinexx_backend/pkg/services/post_service/posts"
 	"net/http"
 	"strings"

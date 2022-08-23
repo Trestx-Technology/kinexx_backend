@@ -1,7 +1,7 @@
 package group_user
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/group_service/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -13,4 +13,3 @@ type GroupUserRepository interface {
 	UpdateOne(filter, update bson.M) (string, error)
 	DeleteOne(filter bson.M) error
 }
-

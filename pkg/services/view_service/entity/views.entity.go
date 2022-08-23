@@ -2,7 +2,8 @@ package viewEntity
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"kinexx_backend/pkg/entity"
+	entity2 "kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/comment_service/entity"
 	viewContentEntity "kinexx_backend/pkg/services/view_content_service/entity"
 	"time"
 )
@@ -21,9 +22,9 @@ type ViewDB struct {
 	Description    string                            `bson:"description" json:"description"`
 	Likes          int                               `bson:"likes" json:"likes"`
 	LikedBy        []string                          `bson:"liked_by" json:"liked_by"`
-	LikedByUsers   []entity.ProfileDB                `bson:"liked_by_users" json:"liked_by_users"`
-	SharedByUsers  []entity.ProfileDB                `bson:"shared_by_users" json:"shared_by_users"`
-	User           entity.ProfileDB                  `json:"user"`
+	LikedByUsers   []entity2.ProfileDB               `bson:"liked_by_users" json:"liked_by_users"`
+	SharedByUsers  []entity2.ProfileDB               `bson:"shared_by_users" json:"shared_by_users"`
+	User           entity2.ProfileDB                 `json:"user"`
 	Comment        []entity.CommentDB                `json:"comment"`
 	Content        []viewContentEntity.ViewContentDB `json:"content"`
 	PostID         string                            `json:"post_id"`

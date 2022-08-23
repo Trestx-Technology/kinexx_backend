@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/chat_service/entity"
 )
 
 type repo struct {

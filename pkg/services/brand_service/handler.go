@@ -3,9 +3,9 @@ package brandservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	brand "kinexx_backend/pkg/services/brand_service/brand"
 	"kinexx_backend/pkg/services/brand_service/db"
+	"kinexx_backend/pkg/services/brand_service/entity"
 	"net/http"
 	"strings"
 	"time"

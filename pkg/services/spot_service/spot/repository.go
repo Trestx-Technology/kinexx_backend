@@ -1,7 +1,7 @@
 package spots
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/spot_service/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
 )

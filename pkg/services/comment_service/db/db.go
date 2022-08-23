@@ -1,8 +1,8 @@
 package db
 
 import (
-	"kinexx_backend/pkg/entity"
 	comments2 "kinexx_backend/pkg/services/comment_service/comments"
+	"kinexx_backend/pkg/services/comment_service/entity"
 	"kinexx_backend/pkg/services/profile_service/db"
 	"kinexx_backend/pkg/utils"
 

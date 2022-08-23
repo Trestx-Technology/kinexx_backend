@@ -1,7 +1,8 @@
 package groupUserdb
 
 import (
-	"kinexx_backend/pkg/entity"
+	entity2 "kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/group_service/entity"
 	"kinexx_backend/pkg/services/group_user_service/group_user"
 
 	groupDB "kinexx_backend/pkg/services/group_service/db"
@@ -71,13 +72,13 @@ func (*groupUserService) GetGroupsForUser(userID string) ([]entity.GroupDB, erro
 
 }
 
-func (*groupUserService) GetUsersInGroup(groupID string) ([]entity.ProfileDB, error) {
+func (*groupUserService) GetUsersInGroup(groupID string) ([]entity2.ProfileDB, error) {
 	var emptyslice []string
 
 	filter := bson.M{"group_id": groupID}
 	groupUserIDs, err := repo.Find(filter, bson.M{})
 	if err != nil {
-		return []entity.ProfileDB{}, err
+		return []entity2.ProfileDB{}, err
 	}
 	for _, group := range groupUserIDs {
 		emptyslice = append(emptyslice, group.UserID)

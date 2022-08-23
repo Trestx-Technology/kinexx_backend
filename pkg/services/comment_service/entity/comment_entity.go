@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"kinexx_backend/pkg/entity"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,8 +21,8 @@ type CommentDB struct {
 	Tags         string             `bson:"tags" json:"tags"`
 	Likes        int                `bson:"likes" json:"likes"`
 	LikedBy      []string           `bson:"liked_by" json:"liked_by"`
-	LikedByUsers []ProfileDB        `bson:"liked_by_users" json:"liked_by_users"`
-	User         ProfileDB          `json:"user"`
+	LikedByUsers []entity.ProfileDB `bson:"liked_by_users" json:"liked_by_users"`
+	User         entity.ProfileDB   `json:"user"`
 	Comment      []CommentDB        `json:"comment"`
 	CommentID    string             `json:"comment_id"`
 }

@@ -3,8 +3,8 @@ package shareservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/share_service/db"
+	"kinexx_backend/pkg/services/share_service/entity"
 	share "kinexx_backend/pkg/services/share_service/share"
 	"net/http"
 	"strings"

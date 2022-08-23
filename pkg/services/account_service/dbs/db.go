@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository"
+	repository2 "kinexx_backend/pkg/services/account_service/repository"
 	"kinexx_backend/pkg/utils"
 	"math/rand"
 	"strconv"
@@ -19,12 +19,12 @@ import (
 )
 
 var (
-	repo = repository.NewProfileRepository("users")
+	repo = repository2.NewProfileRepository("users")
 )
 
 type accountService struct{}
 
-func NewSignUpService(repository repository.ProfileRepository) AccountService {
+func NewSignUpService(repository repository2.ProfileRepository) AccountService {
 	repo = repository
 	return &accountService{}
 }

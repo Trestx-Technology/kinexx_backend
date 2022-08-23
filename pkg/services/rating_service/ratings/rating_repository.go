@@ -1,7 +1,7 @@
 package ratings
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/rating_service/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
 )

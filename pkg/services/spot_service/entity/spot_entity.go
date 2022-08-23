@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"kinexx_backend/pkg/entity"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -16,7 +17,7 @@ type SpotDB struct {
 	CharityID         string             `bson:"charity_id" json:"charity_id"`
 	PromoVideos       []string           `bson:"promo_videos" json:"promo_videos"`
 	NumberOfLocations int                `bson:"number_of_locations" json:"number_of_locations"`
-	Addresses         []AddressDB        `bson:"addresses" json:"addresses"`
+	Addresses         []entity.AddressDB `bson:"addresses" json:"addresses"`
 	Package           string             `bson:"package" json:"package"`
 	Payment           string             `bson:"payment" json:"payment"`
 	CreatorID         string             `bson:"creator_id" json:"creator_id"`

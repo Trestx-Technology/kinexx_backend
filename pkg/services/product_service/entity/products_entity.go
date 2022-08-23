@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"kinexx_backend/pkg/entity"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -29,5 +30,5 @@ type ProductDB struct {
 	CreatorID       string             `bson:"creator_id" json:"creator_id"`
 	CreatedTime     time.Time          `bson:"created_time" json:"created_time"`
 	Status          string             `bson:"status" json:"status"`
-	Address         AddressDB          `bson:"address" json:"address"`
+	Address         entity.AddressDB   `bson:"address" json:"address"`
 }

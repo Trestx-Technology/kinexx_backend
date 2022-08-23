@@ -3,8 +3,8 @@ package productservice
 import (
 	"encoding/json"
 	"io/ioutil"
-	"kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/product_service/db"
+	"kinexx_backend/pkg/services/product_service/entity"
 	product "kinexx_backend/pkg/services/product_service/product"
 	"net/http"
 	"strings"

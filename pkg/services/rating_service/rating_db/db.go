@@ -1,9 +1,11 @@
 package rating_db
 
 import (
-	"kinexx_backend/pkg/entity"
+	entity2 "kinexx_backend/pkg/entity"
 	postDB "kinexx_backend/pkg/services/post_service/db"
+	entity3 "kinexx_backend/pkg/services/post_service/entity"
 	"kinexx_backend/pkg/services/profile_service/db"
+	"kinexx_backend/pkg/services/rating_service/entity"
 	"kinexx_backend/pkg/services/rating_service/ratings"
 	"time"
 
@@ -57,7 +59,7 @@ func (*ratingService) GetAllRatingsByUserID(userID string) ([]entity.RatingDB, e
 func (*ratingService) UpdateRating(*entity.RatingDB) (string, error) {
 	panic("unimplemented")
 }
-func (*ratingService) GetUserReviews(itemID string) ([]entity.RatingDB, float64, entity.ProfileDB, []entity.PostDB, error) {
+func (*ratingService) GetUserReviews(itemID string) ([]entity.RatingDB, float64, entity2.ProfileDB, []entity3.PostDB, error) {
 	profile, posts, err := postDB.GetUserDataInternal(itemID)
 	if err != nil {
 		return []entity.RatingDB{}, 0, profile, posts, err

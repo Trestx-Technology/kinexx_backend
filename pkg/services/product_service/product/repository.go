@@ -1,7 +1,7 @@
 package products
 
 import (
-	"kinexx_backend/pkg/entity"
+	"kinexx_backend/pkg/services/product_service/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
 )

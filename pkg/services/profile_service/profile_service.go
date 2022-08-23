@@ -3,13 +3,13 @@ package profile_service
 import (
 	"encoding/json"
 	"io/ioutil"
+	"kinexx_backend/pkg/services/account_service/repository"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"kinexx_backend/pkg/entity"
-	"kinexx_backend/pkg/repository"
 	"kinexx_backend/pkg/services/profile_service/db"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
