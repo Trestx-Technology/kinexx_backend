@@ -54,7 +54,7 @@ func (*ratingService) GetAllRatingsByUserID(userID string) ([]entity.RatingDB, e
 }
 
 // UpdateRating implements RatingService
-func (*ratingService) UpdateRating(rating *entity.RatingDB) (string, error) {
+func (*ratingService) UpdateRating(*entity.RatingDB) (string, error) {
 	panic("unimplemented")
 }
 func (*ratingService) GetUserReviews(itemID string) ([]entity.RatingDB, float64, entity.ProfileDB, []entity.PostDB, error) {

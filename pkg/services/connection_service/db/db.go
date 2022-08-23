@@ -59,7 +59,7 @@ func (*connectionService) AddConnection(connection *entity.ConnectionDB) (string
 
 func (*connectionService) GetConnectionByID(user string) ([]entity.ConnectionDB, error) {
 
-	connection, err := repo.Find(bson.M{"$or": bson.A{bson.M{"user_id": user}, bson.M{"receiver_id": user}}, "type": "friend"}, bson.M{})
+	connections, err := repo.Find(bson.M{"$or": bson.A{bson.M{"user_id": user}, bson.M{"receiver_id": user}}, "type": "friend"}, bson.M{})
 	if err != nil {
 		trestCommon.ECLog2(
 			"GetConnection section",
@@ -68,29 +68,29 @@ func (*connectionService) GetConnectionByID(user string) ([]entity.ConnectionDB,
 		return []entity.ConnectionDB{}, err
 	}
 	var userIDs []string
-	for connect := range connection {
-		if connection[connect].UserID != user {
-			userIDs = append(userIDs, connection[connect].UserID)
+	for connect := range connections {
+		if connections[connect].UserID != user {
+			userIDs = append(userIDs, connections[connect].UserID)
 		} else {
-			userIDs = append(userIDs, connection[connect].ReceiverID)
+			userIDs = append(userIDs, connections[connect].ReceiverID)
 		}
 	}
 	users, err := db.GetProfilesForIDs(userIDs)
 	for _, us := range users {
-		for connect := range connection {
-			newUrl := createPreSignedDownloadUrl(connection[connect].ContentURL)
-			connection[connect].ContentURL = newUrl
-			if connection[connect].UserID == us.ID.Hex() || connection[connect].ReceiverID == us.ID.Hex() {
-				connection[connect].User = append(connection[connect].User, us)
+		for connect := range connections {
+			newUrl := createPreSignedDownloadUrl(connections[connect].ContentURL)
+			connections[connect].ContentURL = newUrl
+			if connections[connect].UserID == us.ID.Hex() || connections[connect].ReceiverID == us.ID.Hex() {
+				connections[connect].User = append(connections[connect].User, us)
 			}
 		}
 	}
-	return connection, err
+	return connections, err
 }
 
 func (*connectionService) GetConnectionCountByID(user string) (int, error) {
 
-	connection, err := repo.Find(bson.M{"$or": bson.A{bson.M{"user_id": user}, bson.M{"receiver_id": user}}, "type": "friend", "status": "accepted"}, bson.M{})
+	connections, err := repo.Find(bson.M{"$or": bson.A{bson.M{"user_id": user}, bson.M{"receiver_id": user}}, "type": "friend", "status": "accepted"}, bson.M{})
 	if err != nil {
 		trestCommon.ECLog2(
 			"GetConnection section",
@@ -98,11 +98,11 @@ func (*connectionService) GetConnectionCountByID(user string) (int, error) {
 		)
 		return 0, err
 	}
-	return len(connection), err
+	return len(connections), err
 }
 func (*connectionService) GetOnlineConnectionByID(user string) ([]entity.ConnectionDB, error) {
 
-	connection, err := repo.Find(bson.M{"$or": bson.A{bson.M{"user_id": user}, bson.M{"receiver_id": user}}, "type": "friend"}, bson.M{})
+	connections, err := repo.Find(bson.M{"$or": bson.A{bson.M{"user_id": user}, bson.M{"receiver_id": user}}, "type": "friend"}, bson.M{})
 	if err != nil {
 		trestCommon.ECLog2(
 			"GetConnection section",
@@ -111,22 +111,22 @@ func (*connectionService) GetOnlineConnectionByID(user string) ([]entity.Connect
 		return []entity.ConnectionDB{}, err
 	}
 	var userIDs []string
-	for connect := range connection {
-		if connection[connect].UserID != user {
-			userIDs = append(userIDs, connection[connect].UserID)
+	for connect := range connections {
+		if connections[connect].UserID != user {
+			userIDs = append(userIDs, connections[connect].UserID)
 		} else {
-			userIDs = append(userIDs, connection[connect].ReceiverID)
+			userIDs = append(userIDs, connections[connect].ReceiverID)
 		}
 	}
 	users, err := db.GetProfilesForIDs(userIDs)
 	var onLineConnection []entity.ConnectionDB
 	for _, us := range users {
-		for connect := range connection {
-			newUrl := createPreSignedDownloadUrl(connection[connect].ContentURL)
-			connection[connect].ContentURL = newUrl
-			if us.Online && connection[connect].UserID == us.ID.Hex() || connection[connect].ReceiverID == us.ID.Hex() {
-				connection[connect].User = append(connection[connect].User, us)
-				onLineConnection = append(onLineConnection, connection[connect])
+		for connect := range connections {
+			newUrl := createPreSignedDownloadUrl(connections[connect].ContentURL)
+			connections[connect].ContentURL = newUrl
+			if us.Online && connections[connect].UserID == us.ID.Hex() || connections[connect].ReceiverID == us.ID.Hex() {
+				connections[connect].User = append(connections[connect].User, us)
+				onLineConnection = append(onLineConnection, connections[connect])
 			}
 		}
 	}

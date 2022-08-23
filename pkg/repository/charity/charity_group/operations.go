@@ -15,12 +15,6 @@ type repo struct {
 	CollectionName string
 }
 
-func NewCharityGroupRepository(collectionName string) CharityGroupRepository {
-	return &repo{
-		CollectionName: collectionName,
-	}
-}
-
 func (r *repo) InsertOne(document interface{}) (string, error) {
 	group_user, err := trestCommon.InsertOne(document, r.CollectionName)
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 	"kinexx_backend/pkg/repository/groups/group_user"
 
 	groupDB "kinexx_backend/pkg/services/group_service/db"
-	db "kinexx_backend/pkg/services/profile_service/db"
+	"kinexx_backend/pkg/services/profile_service/db"
 
 	"errors"
 	"time"

@@ -354,32 +354,6 @@ func GetUserDataInternal(user string) (entity.ProfileDB, []entity.PostDB, error)
 	}
 	return users[0], posts, nil
 }
-func GetPostID(postId string) (entity.PostDB, error) {
-	id, _ := primitive.ObjectIDFromHex(postId)
-
-	filter := bson.M{"_id": id}
-	post, err := repo.FindOne(filter, bson.M{})
-	if err != nil {
-		trestCommon.ECLog2(
-			"GetPost section",
-			err,
-		)
-		return post, err
-	}
-	var userID []string
-	var postID []string
-
-	newUrl := createPreSignedDownloadUrl(post.ContentURL)
-	post.ContentURL = newUrl
-	userID = append(userID, post.UserID)
-	postID = append(postID, post.ID.Hex())
-	data, _ := db.GetProfilesForIDs(userID)
-	comments, _ := comment_db.GetCommentForPosts(postID)
-	post.User = data[0]
-	post.Comment = append(post.Comment, comments...)
-
-	return post, nil
-}
 
 func (*postService) UpdatePost(post *entity.PostDB) (string, error) {
 	id, err := primitive.ObjectIDFromHex(post.PostID)

@@ -22,7 +22,7 @@ func FindHobbies(query string) ([]entity.HobbiesDB, error) {
 	}
 	return hobies, err
 }
-func GetHobbies(ids []string, page string) ([]entity.HobbiesDB, error) {
+func GetHobbies(ids []string) ([]entity.HobbiesDB, error) {
 	if len(ids) > 0 {
 		filter := bson.A{}
 		for _, i := range ids {

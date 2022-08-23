@@ -1,9 +1,14 @@
 package utils
 
 import (
+	"encoding/json"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/pkg/errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"kinexx_backend/pkg/entity"
 	dbInternal "kinexx_backend/pkg/services/goal_user_service/db_internal"
 	notification_db "kinexx_backend/pkg/services/notification_service/db"
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -19,22 +24,6 @@ import (
 func init() {
 	trestCommon.LoadConfig()
 }
-func ContainsString(list []string, val string) bool {
-	for _, value := range list {
-		if value == val {
-			return true
-		}
-	}
-	return false
-}
-func Containsint(list []int, val int) bool {
-	for _, value := range list {
-		if value == val {
-			return true
-		}
-	}
-	return false
-}
 func EmailLoginOTP(email, name, verificationCode, typ string) (string, error) {
 	subject := viper.GetString("emaillogin.loginsubject")
 	htmlBody := viper.GetString("emaillogin.initial") + viper.GetString("emaillogin.logintop") + name + viper.GetString("emaillogin.mid") + viper.GetString("emaillogin.verifcode") + verificationCode + "</h1>" + viper.GetString("emaillogin.end")
@@ -48,10 +37,10 @@ func EmailLoginOTP(email, name, verificationCode, typ string) (string, error) {
 }
 
 func SendVerificationCode(email, name, verificationCode string) (string, error) {
-	url := createUrl(verificationCode, "verifyemail")
+	uRL := createUrl(verificationCode, "verifyemail")
 	subject := viper.GetString("email.subject")
-	htmlBody := viper.GetString("email.initial") + name + viper.GetString("email.mid") + " href=" + url + ">Verify Email Now</a>" + viper.GetString("email.end")
-	textBody := viper.GetString("email.initial") + name + viper.GetString("email.mid") + " href=" + url + ">Verify Email Now</a>" + viper.GetString("email.end")
+	htmlBody := viper.GetString("email.initial") + name + viper.GetString("email.mid") + " href=" + uRL + ">Verify Email Now</a>" + viper.GetString("email.end")
+	textBody := viper.GetString("email.initial") + name + viper.GetString("email.mid") + " href=" + uRL + ">Verify Email Now</a>" + viper.GetString("email.end")
 	return sendEmail(email, subject, htmlBody, textBody)
 }
 
@@ -140,16 +129,48 @@ func SendNotification(rec, nType, typeID, body, senderID string) {
 	notification.Type = nType
 	notification.TypeID = typeID
 	notification.Body = body
-	notification_db.AddNotification(&notification)
+	_, err := notification_db.AddNotification(&notification)
+	if err != nil {
+		return
+	}
 }
 
 func AddGroupToGoal(goalIDs []string, groupID string) {
 	for _, id := range goalIDs {
-		dbInternal.AddUserToGoalInternal(id, groupID)
+		_, err := dbInternal.AddUserToGoalInternal(id, groupID)
+		if err != nil {
+			return
+		}
 	}
 }
 func AddGoalToGroup(goalIDs string, groupID []string) {
 	for _, id := range groupID {
-		dbInternal.AddUserToGoalInternal(goalIDs, id)
+		_, err := dbInternal.AddUserToGoalInternal(goalIDs, id)
+		if err != nil {
+			return
+		}
 	}
+}
+
+func CheckToken(w http.ResponseWriter, r *http.Request) (jwt.MapClaims, bool) {
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		err := json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		if err != nil {
+			return nil, true
+		}
+		return nil, true
+	}
+	data, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		err := json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		if err != nil {
+			return nil, true
+		}
+		return nil, true
+	}
+	return data, false
 }

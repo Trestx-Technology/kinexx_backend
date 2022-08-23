@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/Trestx-technology/trestx-common-go-lib v1.1.3
 	github.com/aws/aws-sdk-go v1.44.2
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-openapi/swag v0.21.1 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/kylelemons/go-gypsy v1.0.0 // indirect

@@ -3,6 +3,7 @@ package groups
 import (
 	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/mongo"
 	"kinexx_backend/pkg/entity"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
@@ -98,7 +99,11 @@ func (r *repo) Find(filter, projection bson.M) ([]entity.GroupDB, error) {
 			})
 		return nil, err
 	}
-	defer cursor.Close(context.Background())
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+		}
+	}(cursor, context.Background())
 	for cursor.Next(context.TODO()) {
 		var group entity.GroupDB
 		if err = cursor.Decode(&group); err != nil {

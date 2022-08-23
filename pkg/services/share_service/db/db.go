@@ -89,7 +89,7 @@ func (*shareService) GetShareByID(user, shareType string) ([]entity.ShareDB, err
 		return []entity.ShareDB{}, err
 	}
 	if shareType == "ECARD" {
-		userID := []string{}
+		var userID []string
 		for _, share := range shares {
 			userID = append(userID, share.SharedItemID)
 		}
@@ -122,7 +122,7 @@ func (*shareService) GetMyShare(user, shareType string) ([]entity.ShareDB, error
 		return []entity.ShareDB{}, err
 	}
 	if shareType == "ECARD" {
-		userID := []string{}
+		var userID []string
 		for _, share := range shares {
 			userID = append(userID, share.SharedItemID)
 		}
@@ -154,7 +154,7 @@ func GetShareByPostID(post string) ([]string, error) {
 	return userID, err
 }
 
-func (*shareService) UpdateShare(share *entity.ShareDB) (string, error) {
+func (*shareService) UpdateShare(*entity.ShareDB) (string, error) {
 
 	return "", nil
 }

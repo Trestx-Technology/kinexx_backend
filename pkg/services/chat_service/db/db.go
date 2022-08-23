@@ -23,7 +23,7 @@ func (*chatService) GetSpotsChat(spotID string) ([]entity.Message, error) {
 	if err != nil {
 		return []entity.Message{}, nil
 	}
-	userArray := []string{}
+	var userArray []string
 	for i := range chats {
 		userArray = append(userArray, chats[i].SenderID)
 	}

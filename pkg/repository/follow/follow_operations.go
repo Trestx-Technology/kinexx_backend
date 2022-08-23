@@ -17,11 +17,6 @@ type repo struct {
 }
 
 //NewFirestoreRepository creates a new repo
-func NewFollowRepository(collectionName string) FollowRepository {
-	return &repo{
-		CollectionName: collectionName,
-	}
-}
 
 //used by signup
 func (r *repo) InsertOne(document interface{}) (string, error) {

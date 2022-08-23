@@ -110,7 +110,7 @@ func (*profileService) UpdateProfile(profile *Profile, userid string) (string, e
 	}
 	setParameters["online"] = true
 	if profile.Movie != "" {
-		movieID := []int{}
+		var movieID []int
 		for _, idS := range strings.Split(profile.Movie, ",") {
 			mov, err := strconv.Atoi(idS)
 			if err == nil {
@@ -200,7 +200,7 @@ func (*profileService) UpdateMovies(profile *Profile, userid string) (string, er
 		)
 		return "", err
 	}
-	movieID := []int{}
+	var movieID []int
 	for _, idS := range strings.Split(profile.Movie, ",") {
 		mov, err := strconv.Atoi(idS)
 		if err == nil {
@@ -422,7 +422,7 @@ func (*profileService) GetProfile(userID string) (entity.ProfileDB, int64, error
 	profile.UrlToProfileImage = newUrl
 	per := calculatePercentage(profile)
 	profile.MoviesList, _ = movies_service.GetMovie(profile.Movies, "0")
-	profile.HobbiesList, _ = hobby_db.GetHobbies(profile.Hobbies, "0")
+	profile.HobbiesList, _ = hobby_db.GetHobbies(profile.Hobbies)
 	profile.SelectedPortFolioVideo = createPreSignedDownloadUrl(profile.SelectedPortFolioVideo)
 	for j := range profile.PortfolioVideos {
 		profile.PortfolioVideos[j] = createPreSignedDownloadUrl(profile.PortfolioVideos[j])
@@ -504,7 +504,7 @@ func (*profileService) GetUserProfile(userID string) (entity.ProfileDB, int64, e
 	profile.UrlToProfileImage = newUrl
 	per := calculatePercentage(profile)
 	profile.MoviesList, _ = movies_service.GetMovie(profile.Movies, "1")
-	profile.HobbiesList, _ = hobby_db.GetHobbies(profile.Hobbies, "0")
+	profile.HobbiesList, _ = hobby_db.GetHobbies(profile.Hobbies)
 	profile.SelectedPortFolioVideo = createPreSignedDownloadUrl(profile.SelectedPortFolioVideo)
 	for j := range profile.PortfolioVideos {
 		profile.PortfolioVideos[j] = createPreSignedDownloadUrl(profile.PortfolioVideos[j])
@@ -620,7 +620,7 @@ func (*profileService) GetAllProfile(userID string) ([]entity.ProfileDB, error) 
 		profile[i].UrlToProfileImage = newUrl
 		profile[i].Password = ""
 		profile[i].MoviesList, _ = movies_service.GetMovie(profile[i].Movies, "1")
-		profile[i].HobbiesList, _ = hobby_db.GetHobbies(profile[i].Hobbies, "0")
+		profile[i].HobbiesList, _ = hobby_db.GetHobbies(profile[i].Hobbies)
 		profile[i].SelectedPortFolioVideo = createPreSignedDownloadUrl(profile[i].SelectedPortFolioVideo)
 		for j := range profile[i].PortfolioVideos {
 			profile[i].PortfolioVideos[j] = createPreSignedDownloadUrl(profile[i].PortfolioVideos[j])
@@ -662,7 +662,7 @@ func (*profileService) SearchUser(search string) ([]entity.ProfileDB, error) {
 		profile[i].UrlToProfileImage = newUrl
 		profile[i].Password = ""
 		profile[i].MoviesList, _ = movies_service.GetMovie(profile[i].Movies, "1")
-		profile[i].HobbiesList, _ = hobby_db.GetHobbies(profile[i].Hobbies, "0")
+		profile[i].HobbiesList, _ = hobby_db.GetHobbies(profile[i].Hobbies)
 		profile[i].SelectedPortFolioVideo = createPreSignedDownloadUrl(profile[i].SelectedPortFolioVideo)
 		for j := range profile[i].PortfolioVideos {
 			profile[i].PortfolioVideos[j] = createPreSignedDownloadUrl(profile[i].PortfolioVideos[j])
@@ -717,7 +717,7 @@ func GetProfilesForIDs(userIDs []string) ([]entity.ProfileDB, error) {
 		profile[prof].UrlToProfileImage = newUrl
 		profile[prof].Password = ""
 		//profile[prof].MoviesList, _ = movies_service.GetMovie(profile[prof].Movies, "1")
-		profile[prof].HobbiesList, _ = hobby_db.GetHobbies(profile[prof].Hobbies, "0")
+		profile[prof].HobbiesList, _ = hobby_db.GetHobbies(profile[prof].Hobbies)
 		profile[prof].SelectedPortFolioVideo = createPreSignedDownloadUrl(profile[prof].SelectedPortFolioVideo)
 		for j := range profile[prof].PortfolioVideos {
 			profile[prof].PortfolioVideos[j] = createPreSignedDownloadUrl(profile[prof].PortfolioVideos[j])

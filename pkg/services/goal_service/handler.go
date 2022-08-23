@@ -11,7 +11,6 @@ import (
 	"time"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
-	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
@@ -91,85 +90,6 @@ func GetAllGoals(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete group"})
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
-	endTime := time.Now()
-	duration := endTime.Sub(startTime)
-	trestCommon.DLogMap("comment updated", logrus.Fields{
-		"duration": duration,
-	})
-}
-func DeleteGoal(w http.ResponseWriter, r *http.Request) {
-	startTime := time.Now()
-	trestCommon.DLogMap("making goal", logrus.Fields{
-		"start_time": startTime})
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
-	if len(tokenString) < 2 {
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
-		return
-	}
-	_, err := trestCommon.DecodeToken(tokenString[1])
-	if err != nil {
-		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
-		return
-	}
-	var goalID = mux.Vars(r)["goalID"]
-
-	// why not used json.Unmarshal
-	// how did we get id
-
-	err = goalservice.DeleteGoal(goalID)
-	if err != nil {
-		trestCommon.ECLog1(errors.Wrapf(err, "unable to delete goal"))
-
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to delete goal"})
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": "Deleted Successfully"})
-	endTime := time.Now()
-	duration := endTime.Sub(startTime)
-	trestCommon.DLogMap("comment updated", logrus.Fields{
-		"duration": duration,
-	})
-}
-
-func PauseGoal(w http.ResponseWriter, r *http.Request) {
-	startTime := time.Now()
-	trestCommon.DLogMap("making goal", logrus.Fields{
-		"start_time": startTime})
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
-	if len(tokenString) < 2 {
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
-		return
-	}
-	_, err := trestCommon.DecodeToken(tokenString[1])
-	if err != nil {
-		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
-		return
-	}
-	var goalID = mux.Vars(r)["goalID"]
-	var goalStatus = mux.Vars(r)["status"]
-
-	data, err := goalservice.PauseGoal(goalStatus, goalID)
-	if err != nil {
-		trestCommon.ECLog1(errors.Wrapf(err, "unable to pause goal"))
-
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to pause goal"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
