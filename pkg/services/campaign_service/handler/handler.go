@@ -37,6 +37,8 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := campaignService.AddCampaign(brand)
+	data.ContentURL = utils.CreatePreSignedDownloadUrl(data.ContentURL)
+	data.VideoURL = utils.CreatePreSignedDownloadUrl(data.VideoURL)
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -60,6 +62,8 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := campaignService.UpdateCampaign(brand, mux.Vars(r)["id"])
+	data.ContentURL = utils.CreatePreSignedDownloadUrl(data.ContentURL)
+	data.VideoURL = utils.CreatePreSignedDownloadUrl(data.VideoURL)
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -97,6 +101,10 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := campaignService.GetAllCampaign()
+	for i := range data {
+		data[i].ContentURL = utils.CreatePreSignedDownloadUrl(data[i].ContentURL)
+		data[i].VideoURL = utils.CreatePreSignedDownloadUrl(data[i].VideoURL)
+	}
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -115,6 +123,10 @@ func GetMy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := campaignService.GetMyCampaign(dataToken["userid"].(string))
+	for i := range data {
+		data[i].ContentURL = utils.CreatePreSignedDownloadUrl(data[i].ContentURL)
+		data[i].VideoURL = utils.CreatePreSignedDownloadUrl(data[i].VideoURL)
+	}
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -133,6 +145,10 @@ func Find(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := campaignService.GetMyCampaign(mux.Vars(r)["name"])
+	for i := range data {
+		data[i].ContentURL = utils.CreatePreSignedDownloadUrl(data[i].ContentURL)
+		data[i].VideoURL = utils.CreatePreSignedDownloadUrl(data[i].VideoURL)
+	}
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -151,6 +167,9 @@ func GetDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := campaignService.GetCampaign(mux.Vars(r)["id"])
+	data.ContentURL = utils.CreatePreSignedDownloadUrl(data.ContentURL)
+	data.VideoURL = utils.CreatePreSignedDownloadUrl(data.VideoURL)
+
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)

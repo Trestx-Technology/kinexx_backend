@@ -52,6 +52,9 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := service.Add(brand)
+	data.Banner = utils.CreatePreSignedDownloadUrl(data.Banner)
+	data.Cover = utils.CreatePreSignedDownloadUrl(data.Cover)
+	data.Trailer = utils.CreatePreSignedDownloadUrl(data.Trailer)
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -75,6 +78,9 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := service.Update(brand, mux.Vars(r)["id"])
+	data.Banner = utils.CreatePreSignedDownloadUrl(data.Banner)
+	data.Cover = utils.CreatePreSignedDownloadUrl(data.Cover)
+	data.Trailer = utils.CreatePreSignedDownloadUrl(data.Trailer)
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -112,6 +118,11 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := service.GetAll()
+	for i := range data {
+		data[i].Banner = utils.CreatePreSignedDownloadUrl(data[i].Banner)
+		data[i].Cover = utils.CreatePreSignedDownloadUrl(data[i].Cover)
+		data[i].Trailer = utils.CreatePreSignedDownloadUrl(data[i].Trailer)
+	}
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -130,6 +141,11 @@ func GetMy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := service.GetMy(dataToken["userid"].(string))
+	for i := range data {
+		data[i].Banner = utils.CreatePreSignedDownloadUrl(data[i].Banner)
+		data[i].Cover = utils.CreatePreSignedDownloadUrl(data[i].Cover)
+		data[i].Trailer = utils.CreatePreSignedDownloadUrl(data[i].Trailer)
+	}
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -149,6 +165,16 @@ func GetDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := service.Get(mux.Vars(r)["id"], dataToken["userid"].(string))
+	for i := range data {
+		data[i].Banner = utils.CreatePreSignedDownloadUrl(data[i].Banner)
+		data[i].Cover = utils.CreatePreSignedDownloadUrl(data[i].Cover)
+		data[i].Trailer = utils.CreatePreSignedDownloadUrl(data[i].Trailer)
+		for j := range data[i].Content {
+			data[i].Content[j].Banner = utils.CreatePreSignedDownloadUrl(data[i].Content[j].Banner)
+			data[i].Content[j].Cover = utils.CreatePreSignedDownloadUrl(data[i].Content[j].Cover)
+			data[i].Content[j].VideoURL = utils.CreatePreSignedDownloadUrl(data[i].Content[j].VideoURL)
+		}
+	}
 	handlers.Handler(w, err, data[0])
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)

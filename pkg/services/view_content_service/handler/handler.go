@@ -37,6 +37,9 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := viewContentService.Add(brand)
+	data.Banner = utils.CreatePreSignedDownloadUrl(data.Banner)
+	data.Cover = utils.CreatePreSignedDownloadUrl(data.Cover)
+	data.VideoURL = utils.CreatePreSignedDownloadUrl(data.VideoURL)
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -60,6 +63,9 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := viewContentService.Update(brand, mux.Vars(r)["id"])
+	data.Banner = utils.CreatePreSignedDownloadUrl(data.Banner)
+	data.Cover = utils.CreatePreSignedDownloadUrl(data.Cover)
+	data.VideoURL = utils.CreatePreSignedDownloadUrl(data.VideoURL)
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
@@ -98,6 +104,11 @@ func GetForCampaign(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data, err := viewContentService.GetForCampaign(mux.Vars(r)["campaign_id"])
+	for i := range data {
+		data[i].Banner = utils.CreatePreSignedDownloadUrl(data[i].Banner)
+		data[i].Cover = utils.CreatePreSignedDownloadUrl(data[i].Cover)
+		data[i].VideoURL = utils.CreatePreSignedDownloadUrl(data[i].VideoURL)
+	}
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
