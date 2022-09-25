@@ -2,11 +2,6 @@ package viewHandler
 
 import (
 	"encoding/json"
-	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
-	"github.com/gorilla/mux"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"go.mongodb.org/mongo-driver/bson"
 	"io/ioutil"
 	handlers "kinexx_backend/pkg/handler"
 	viewDB "kinexx_backend/pkg/services/view_service/db"
@@ -15,6 +10,12 @@ import (
 	"kinexx_backend/pkg/utils"
 	"net/http"
 	"time"
+
+	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
+	"github.com/gorilla/mux"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var (
@@ -176,6 +177,25 @@ func GetDetail(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	handlers.Handler(w, err, data[0])
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("brand updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func GetCount(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("setting brand", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	_, done2 := utils.CheckToken(w, r)
+	if done2 {
+		return
+	}
+	data, err := service.Count()
+
+	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("brand updated", logrus.Fields{

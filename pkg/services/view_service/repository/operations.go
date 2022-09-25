@@ -3,11 +3,12 @@ package viewRepository
 import (
 	"context"
 	"errors"
+	viewEntity "kinexx_backend/pkg/services/view_service/entity"
+
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	viewEntity "kinexx_backend/pkg/services/view_service/entity"
 )
 
 type repo struct {
@@ -174,4 +175,7 @@ func (r *repo) Aggregate(pipeline bson.A) ([]viewEntity.ViewDB, error) {
 		viewContents = append(viewContents, viewContent)
 	}
 	return viewContents, nil
+}
+func (r *repo) Count(filter bson.M) (int64, error) {
+	return trestCommon.Count(filter, bson.M{}, r.CollectionName)
 }

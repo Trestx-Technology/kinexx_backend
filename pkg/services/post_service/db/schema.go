@@ -17,4 +17,5 @@ type PostService interface {
 	SharedPost(post string) ([]entity2.ProfileDB, error)
 	DisLikePost(post, userID string) (string, error)
 	GetUserData(user string) (entity2.ProfileDB, []entity.PostDB, error)
+	GetCount(postType string) (int64, error)
 }

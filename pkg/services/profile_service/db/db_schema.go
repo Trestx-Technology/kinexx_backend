@@ -21,6 +21,7 @@ type ProfileService interface {
 	AddAndUpdateExperience(exp entity.Experience, userID, experienceID string) (string, error)
 	RemoveExperience(experienceID, userID string) (string, error)
 	BlockUser(userID string, blockUserID string) (string, error)
+	CountAllUsers(userID string) (int64, error)
 }
 
 type Profile struct {

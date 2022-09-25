@@ -12,4 +12,5 @@ type CampaignService interface {
 	SearchCampaign(search string) ([]campaignEntity.Campaign, error)
 	GetCampaign(brandID string) (campaignEntity.Campaign, error)
 	DeleteCampaign(brandID string) (string, error)
+	Count() (int64, error)
 }

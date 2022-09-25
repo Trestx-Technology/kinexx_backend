@@ -3,11 +3,12 @@ package repository
 import (
 	"context"
 	"errors"
+	campaignEntity "kinexx_backend/pkg/services/campaign_service/entity"
+
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	campaignEntity "kinexx_backend/pkg/services/campaign_service/entity"
 )
 
 type repo struct {
@@ -143,4 +144,7 @@ func (r *repo) DeleteOne(filter bson.M) error {
 		return err
 	}
 	return nil
+}
+func (r *repo) Count(filter bson.M) (int64, error) {
+	return trestCommon.Count(filter, bson.M{}, r.CollectionName)
 }

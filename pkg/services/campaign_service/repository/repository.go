@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"go.mongodb.org/mongo-driver/bson"
 	campaignEntity "kinexx_backend/pkg/services/campaign_service/entity"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type CampaignRepository interface {
@@ -11,4 +12,5 @@ type CampaignRepository interface {
 	Find(filter, projection bson.M) ([]campaignEntity.Campaign, error)
 	UpdateOne(filter, update bson.M) (string, error)
 	DeleteOne(filter bson.M) error
+	Count(filter bson.M) (int64, error)
 }

@@ -3,8 +3,9 @@ package groups
 import (
 	"context"
 	"errors"
-	"go.mongodb.org/mongo-driver/mongo"
 	"kinexx_backend/pkg/services/group_service/entity"
+
+	"go.mongodb.org/mongo-driver/mongo"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/sirupsen/logrus"
@@ -14,6 +15,11 @@ import (
 
 type repo struct {
 	CollectionName string
+}
+
+// Count implements GroupRepository
+func (r *repo) Count(filter primitive.M) (int64, error) {
+	return trestCommon.Count(filter, bson.M{}, r.CollectionName)
 }
 
 func NewGroupRepository(collectionName string) GroupRepository {

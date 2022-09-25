@@ -1,11 +1,12 @@
 package campaignDB
 
 import (
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	campaignEntity "kinexx_backend/pkg/services/campaign_service/entity"
 	"kinexx_backend/pkg/services/campaign_service/repository"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var (
@@ -134,7 +135,10 @@ func (c campaignService) GetAllCampaign() ([]campaignEntity.Campaign, error) {
 	return repo.Find(bson.M{}, bson.M{})
 
 }
+func (c campaignService) Count() (int64, error) {
+	return repo.Count(bson.M{})
 
+}
 func (c campaignService) SearchCampaign(search string) ([]campaignEntity.Campaign, error) {
 	return repo.Find(bson.M{"name": search}, bson.M{})
 

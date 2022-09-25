@@ -1,11 +1,12 @@
 package viewEntity
 
 import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	entity2 "kinexx_backend/pkg/entity"
 	"kinexx_backend/pkg/services/comment_service/entity"
 	viewContentEntity "kinexx_backend/pkg/services/view_content_service/entity"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type ViewDB struct {
@@ -15,6 +16,7 @@ type ViewDB struct {
 	Status         int                               `bson:"status" json:"status"`
 	CreatedTime    time.Time                         `bson:"created_time" json:"created_time"`
 	UpdatedTime    time.Time                         `bson:"updated_time" json:"updated_time"`
+	Title          string                            `bson:"title" json:"title"`
 	Banner         string                            `bson:"banner" json:"banner"`
 	Cover          string                            `bson:"cover" json:"cover"`
 	Trailer        string                            `bson:"trailer" json:"trailer"`

@@ -11,4 +11,5 @@ type ProfileRepository interface {
 	Find(filter, projection bson.M) ([]entity.ProfileDB, error)
 	UpdateOne(filter, update bson.M) (string, error)
 	DeleteOne(filter bson.M) error
+	Count(filter bson.M) (int64, error)
 }

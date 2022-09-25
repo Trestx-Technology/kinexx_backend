@@ -11,4 +11,5 @@ type Service interface {
 	GetAll() ([]viewEntity.ViewDB, error)
 	Get(viewID string, userID string) ([]viewEntity.ViewDB, error)
 	Delete(viewID string) (string, error)
+	Count() (int64, error)
 }

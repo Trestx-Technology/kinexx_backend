@@ -1,8 +1,9 @@
 package viewRepository
 
 import (
-	"go.mongodb.org/mongo-driver/bson"
 	viewEntity "kinexx_backend/pkg/services/view_service/entity"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Repository interface {
@@ -12,4 +13,5 @@ type Repository interface {
 	UpdateOne(filter, update bson.M) (string, error)
 	DeleteOne(filter bson.M) error
 	Aggregate(pipeline bson.A) ([]viewEntity.ViewDB, error)
+	Count(filter bson.M) (int64, error)
 }

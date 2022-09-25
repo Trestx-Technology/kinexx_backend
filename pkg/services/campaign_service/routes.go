@@ -38,6 +38,12 @@ var CampaignServices = entity.Routes{
 	},
 	entity.Route{
 		Name:        "Campaign",
+		Method:      "GET",
+		Pattern:     "/count/campaign",
+		HandlerFunc: campaignHandler.GetCount,
+	},
+	entity.Route{
+		Name:        "Campaign",
 		Method:      "PUT",
 		Pattern:     "/campaign/{id}",
 		HandlerFunc: campaignHandler.Update,

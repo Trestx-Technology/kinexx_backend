@@ -145,3 +145,7 @@ func (r *repo) DeleteOne(filter bson.M) error {
 	}
 	return nil
 }
+
+func (r *repo) Count(filter bson.M) (int64, error) {
+	return trestCommon.Count(filter, bson.M{}, r.CollectionName)
+}

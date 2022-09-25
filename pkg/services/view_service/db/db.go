@@ -101,3 +101,7 @@ func NewService(repository viewRepository.Repository) Service {
 	repo = repository
 	return &service{}
 }
+func (*service) Count() (int64, error) {
+	return repo.Count(bson.M{})
+
+}

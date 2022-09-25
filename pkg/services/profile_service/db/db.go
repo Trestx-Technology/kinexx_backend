@@ -876,3 +876,26 @@ func sendConfirmationEmail(email string) (string, error) {
 	}
 	return "email sent successfully", nil
 }
+
+func (*profileService) CountAllUsers(userID string) (int64, error) {
+	if userID == "" {
+		err := errors.New("user id missing")
+		trestCommon.ECLog2(
+			"GetProfile section",
+			err,
+		)
+		return 0, err
+	}
+	id, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		trestCommon.ECLog3(
+			"GetProfile section",
+			err,
+			logrus.Fields{
+				"user_id": userID,
+			},
+		)
+		return 0, err
+	}
+	return repo.Count(bson.M{"_id": bson.M{"$ne": id}})
+}

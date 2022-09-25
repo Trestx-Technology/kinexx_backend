@@ -183,6 +183,12 @@ var routes = entity.Routes{
 	entity.Route{
 		Name:        "get profile",
 		Method:      "GET",
+		Pattern:     "/profile/count",
+		HandlerFunc: profile_service.GetCount,
+	},
+	entity.Route{
+		Name:        "get profile",
+		Method:      "GET",
 		Pattern:     "/profile/user/{userid}",
 		HandlerFunc: profile_service.GetUserProfile,
 	},
@@ -221,6 +227,12 @@ var routes = entity.Routes{
 		Method:      "GET",
 		Pattern:     "/posts",
 		HandlerFunc: post.GetPost,
+	},
+	entity.Route{
+		Name:        "Posts",
+		Method:      "GET",
+		Pattern:     "/posts/count",
+		HandlerFunc: post.GetPostCount,
 	},
 	entity.Route{
 		Name:        "Posts",
@@ -379,6 +391,12 @@ var routes = entity.Routes{
 		HandlerFunc: chat.GetSpotChat,
 	},
 	entity.Route{
+		Name:        "Count",
+		Method:      "GET",
+		Pattern:     "/spot/count",
+		HandlerFunc: spot.GetCount,
+	},
+	entity.Route{
 		Name:        "Chat",
 		Method:      "DELETE",
 		Pattern:     "/chat/{receiver}/{message}",
@@ -455,6 +473,12 @@ var routes = entity.Routes{
 		Method:      "GET",
 		Pattern:     "/group",
 		HandlerFunc: group.GetAllGroup,
+	},
+	entity.Route{
+		Name:        "Group",
+		Method:      "GET",
+		Pattern:     "/group/count",
+		HandlerFunc: group.GetCount,
 	},
 	entity.Route{
 		Name:        "Group",
@@ -620,6 +644,12 @@ var routes = entity.Routes{
 	},
 	entity.Route{
 		Name:        "Store",
+		Method:      "GET",
+		Pattern:     "/count/store",
+		HandlerFunc: store.GetCount,
+	},
+	entity.Route{
+		Name:        "Store",
 		Method:      "DELETE",
 		Pattern:     "/store/{id}",
 		HandlerFunc: store.DeleteStore,
@@ -647,6 +677,12 @@ var routes = entity.Routes{
 		Method:      "GET",
 		Pattern:     "/product/{id}",
 		HandlerFunc: product.GetDetails,
+	},
+	entity.Route{
+		Name:        "Product",
+		Method:      "GET",
+		Pattern:     "/count/product",
+		HandlerFunc: product.GetCount,
 	},
 	entity.Route{
 		Name:        "Product",

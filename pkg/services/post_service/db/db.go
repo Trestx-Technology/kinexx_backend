@@ -429,3 +429,10 @@ func createPreSignedDownloadUrl(url string) string {
 	}
 	return ""
 }
+func (*postService) GetCount(postType string) (int64, error) {
+	filter := bson.M{}
+	if postType != "" {
+		filter["post_type"] = postType
+	}
+	return repo.Count(filter)
+}

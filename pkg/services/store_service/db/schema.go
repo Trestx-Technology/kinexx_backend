@@ -9,4 +9,5 @@ type StoreService interface {
 	GetAllShops(spotID, groupID, brandID, creatorID string) ([]entity.ShopDB, error)
 	GetShop(shopID string) (entity.ShopDB, error)
 	DeleteShop(shopID string) (string, error)
+	Count() (int64, error)
 }

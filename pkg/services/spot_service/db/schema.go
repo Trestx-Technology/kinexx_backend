@@ -9,4 +9,5 @@ type SpotService interface {
 	GetAllSpots(groupID, creatorID string) ([]entity.SpotDB, error)
 	GetSpot(spotID string) (entity.SpotDB, error)
 	DeleteSpot(spotID string) (string, error)
+	Count() (int64, error)
 }

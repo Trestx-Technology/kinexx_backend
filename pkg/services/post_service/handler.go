@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"kinexx_backend/pkg/services/post_service/db"
 	"kinexx_backend/pkg/services/post_service/entity"
-	"kinexx_backend/pkg/services/post_service/posts"
+	post "kinexx_backend/pkg/services/post_service/posts"
 	"net/http"
 	"strings"
 	"time"
@@ -479,6 +479,41 @@ func GetUserData(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "user": data, "data": posts})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("post sent", logrus.Fields{
+		"duration": duration,
+	})
+}
+func GetPostCount(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("getting post", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	tokenString := strings.Split(r.Header.Get("Authorization"), " ")
+	if len(tokenString) < 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	_, err := trestCommon.DecodeToken(tokenString[1])
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "failed to authenticate token"))
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "authorization failed"})
+		return
+	}
+	postType := r.URL.Query().Get("posttype")
+	data, err := postService.GetCount(postType)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to get post data"))
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "User Not Available"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 	trestCommon.DLogMap("post sent", logrus.Fields{

@@ -123,6 +123,9 @@ func (*groupService) GetAllGroup() ([]entity.GroupDB, error) {
 	}
 	return groups, err
 }
+func (*groupService) CountGroup() (int64, error) {
+	return repo.Count(bson.M{})
+}
 func GetGroupsByIDs(groupIDs []string) ([]entity.GroupDB, error) {
 	groupBsonArray := bson.A{}
 	for _, groupID := range groupIDs {

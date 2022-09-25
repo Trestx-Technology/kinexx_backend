@@ -43,5 +43,11 @@ var (
 			Pattern:     "/view/{id}",
 			HandlerFunc: viewHandler.Delete,
 		},
+		entity.Route{
+			Name:        "View",
+			Method:      "GET",
+			Pattern:     "/count/view",
+			HandlerFunc: viewHandler.GetCount,
+		},
 	}
 )

@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/services/spot_service/entity"
-	"kinexx_backend/pkg/services/spot_service/spot"
+	spots "kinexx_backend/pkg/services/spot_service/spot"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -81,4 +81,8 @@ func (*spotService) GetSpot(spotID string) (entity.SpotDB, error) {
 func NewSpotService(repository spots.SpotRepository) SpotService {
 	repo = repository
 	return &spotService{}
+}
+func (*spotService) Count() (int64, error) {
+	return repo.Count(bson.M{})
+
 }

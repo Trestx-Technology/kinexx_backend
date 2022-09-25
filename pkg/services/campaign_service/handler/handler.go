@@ -2,7 +2,6 @@ package campaignHandler
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	handlers "kinexx_backend/pkg/handler"
 	campaignDB "kinexx_backend/pkg/services/campaign_service/db"
@@ -11,6 +10,8 @@ import (
 	"kinexx_backend/pkg/utils"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
 
 	trestCommon "github.com/Trestx-technology/trestx-common-go-lib"
 	"github.com/pkg/errors"
@@ -105,6 +106,25 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 		data[i].ContentURL = utils.CreatePreSignedDownloadUrl(data[i].ContentURL)
 		data[i].VideoURL = utils.CreatePreSignedDownloadUrl(data[i].VideoURL)
 	}
+	handlers.Handler(w, err, data)
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("brand updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+func GetCount(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("setting brand", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	_, done2 := utils.CheckToken(w, r)
+	if done2 {
+		return
+	}
+	data, err := campaignService.Count()
+
 	handlers.Handler(w, err, data)
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)

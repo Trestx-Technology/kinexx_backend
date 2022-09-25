@@ -6,6 +6,7 @@ import (
 	"kinexx_backend/pkg/services/product_service/db"
 	"kinexx_backend/pkg/services/product_service/entity"
 	product "kinexx_backend/pkg/services/product_service/product"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -220,6 +221,32 @@ func Update(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to set product"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bson.M{"status": true, "error": "", "data": data})
+	endTime := time.Now()
+	duration := endTime.Sub(startTime)
+	trestCommon.DLogMap("product updated", logrus.Fields{
+		"duration": duration,
+	})
+}
+
+func GetCount(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	trestCommon.DLogMap("setting product", logrus.Fields{
+		"start_time": startTime})
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	var proType = r.URL.Query().Get("type")
+	log.Println("------------------------dfjijdhfisdufh-------------------------", proType)
+	data, err := productService.Count(proType)
+	if err != nil {
+		trestCommon.ECLog1(errors.Wrapf(err, "unable to set product"))
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(bson.M{"status": false, "error": "Unable to find product"})
 		return
 	}
 	w.WriteHeader(http.StatusOK)

@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/services/product_service/entity"
-	"kinexx_backend/pkg/services/product_service/product"
+	products "kinexx_backend/pkg/services/product_service/product"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -166,4 +166,8 @@ func (*productService) GetProduct(productID string) (entity.ProductDB, error) {
 func NewProductService(repository products.ProductRepository) ProductService {
 	repo = repository
 	return &productService{}
+}
+func (*productService) Count(proType string) (int64, error) {
+	return repo.Count(bson.M{"type": proType})
+
 }

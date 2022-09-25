@@ -2,7 +2,7 @@ package db
 
 import (
 	"kinexx_backend/pkg/services/store_service/entity"
-	"kinexx_backend/pkg/services/store_service/store"
+	stores "kinexx_backend/pkg/services/store_service/store"
 	"kinexx_backend/pkg/utils"
 	"time"
 
@@ -85,4 +85,8 @@ func (*storeService) GetShop(shopID string) (entity.ShopDB, error) {
 func NewStoreService(repository stores.StoreRepository) StoreService {
 	repo = repository
 	return &storeService{}
+}
+func (*storeService) Count() (int64, error) {
+	return repo.Count(bson.M{})
+
 }

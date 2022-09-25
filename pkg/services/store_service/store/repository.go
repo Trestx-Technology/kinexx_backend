@@ -12,4 +12,5 @@ type StoreRepository interface {
 	Find(filter, projection bson.M) ([]entity.ShopDB, error)
 	UpdateOne(filter, update bson.M) (string, error)
 	DeleteOne(filter bson.M) error
+	Count(filter bson.M) (int64, error)
 }
